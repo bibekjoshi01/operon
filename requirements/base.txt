@@ -1,0 +1,13 @@
+# Base packages
+requests>=2.32,<3.0
+psycopg2-binary>=2.9,<3.0
+Pillow>=10.3,<11.0
+argon2-cffi>=23.1,<24.0
+python-dotenv>=0.21
+
+# Django
+Django==5.2.8
+django-tenants>=3.5
+django-cors-headers>=4.6,<5.0
+django-jazzmin
+django-ckeditor-5
