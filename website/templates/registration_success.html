@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration Successful - Operon SaaS{% endblock %}
+
+{% block meta_description %}Your organization has been created successfully. Here are your login credentials.{% endblock %}
+
+{% block container_class %}large{% endblock %}
+
+{% block content %}
+<div class="page-header text-center">
+    <div class="success-icon">✅</div>
+    <h1 class="success">Registration Successful!</h1>
+    <p class="subtitle">Your organization has been created and is ready to use. Here are your login credentials:</p>
+</div>
+
+<!-- Credentials Box -->
+<div class="credentials-box">
+    <h2>Your Login Credentials</h2>
+
+    <div class="credential-item">
+        <div class="credential-label">Organization</div>
+        <div class="credential-value">{{ organization }}</div>
+    </div>
+
+    <div class="credential-item">
+        <div class="credential-label">Subdomain URL</div>
+        <div class="credential-value">{{ subdomain }}.localhost</div>
+    </div>
+
+    <div class="credential-item">
+        <div class="credential-label">Username</div>
+        <div class="credential-value">{{ username }}</div>
+    </div>
+
+    <div class="credential-item">
+        <div class="credential-label">Email</div>
+        <div class="credential-value">{{ email }}</div>
+    </div>
+</div>
+
+<!-- Warning Box -->
+<div class="info-box warning mb-30">
+    <strong>⚠️ Save Your Credentials</strong>
+    Please save your username and password in a secure place. You'll need them to access your admin panel or dashboard.
+</div>
+
+<!-- Info Sections -->
+<div class="info-sections">
+    <div class="info-section">
+        <h3>📊 Access Your Dashboard</h3>
+        <p>Visit your dedicated workspace at:<br/><code>{{ subdomain }}.localhost</code></p>
+    </div>
+
+    <div class="info-section">
+        <h3>🔐 Access Admin Panel</h3>
+        <p>Manage your organization and users at:<br/><code>{{ subdomain }}.localhost/admin</code></p>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="button-group centered">
+    <a href="{% url 'home' %}" class="btn btn-secondary">← Back to Home</a>
+    <a href="http://{{ subdomain }}.localhost/" class="btn btn-success">Go to Dashboard →</a>
+</div>
+{% endblock %}

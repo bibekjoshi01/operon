@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Register Your Site - Operon SaaS{% endblock %}
+
+{% block meta_description %}Create your organization and get started with Operon in minutes.{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Register Your Site</h1>
+    <p class="subtitle">Set up your organization and get started with Operon SaaS</p>
+</div>
+
+<div class="info-box mb-30">
+    <strong>🚀 Quick Setup</strong>
+    Fill in your organization details below and we'll create your dedicated workspace instantly with admin credentials.
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="info-box warning">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="POST" novalidate>
+    {% csrf_token %}
+
+    <!-- Organization Name -->
+    <div class="form-group form-row full">
+        <div>
+            <label for="{{ form.organization_name.id_for_label }}">Organization Name <span class="required">*</span></label>
+            {{ form.organization_name }}
+            {% if form.organization_name.errors %}
+                <ul class="error-list">
+                    {% for error in form.organization_name.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Subdomain -->
+    <div class="form-group form-row full">
+        <div>
+            <label for="{{ form.subdomain.id_for_label }}">Subdomain <span class="required">*</span></label>
+            {{ form.subdomain }}
+            {% if form.subdomain.errors %}
+                <ul class="error-list">
+                    {% for error in form.subdomain.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <span class="help-text">{{ form.subdomain.help_text }}</span>
+        </div>
+    </div>
+
+    <!-- Admin Email -->
+    <div class="form-group form-row full">
+        <div>
+            <label for="{{ form.admin_email.id_for_label }}">Admin Email <span class="required">*</span></label>
+            {{ form.admin_email }}
+            {% if form.admin_email.errors %}
+                <ul class="error-list">
+                    {% for error in form.admin_email.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Admin Username -->
+    <div class="form-group form-row full">
+        <div>
+            <label for="{{ form.admin_username.id_for_label }}">Admin Username <span class="required">*</span></label>
+            {{ form.admin_username }}
+            {% if form.admin_username.errors %}
+                <ul class="error-list">
+                    {% for error in form.admin_username.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group form-row">
+        <div>
+            <label for="{{ form.admin_password.id_for_label }}">Password <span class="required">*</span></label>
+            {{ form.admin_password }}
+            {% if form.admin_password.errors %}
+                <ul class="error-list">
+                    {% for error in form.admin_password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <span class="help-text">{{ form.admin_password.help_text }}</span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+            <label for="{{ form.confirm_password.id_for_label }}">Confirm Password <span class="required">*</span></label>
+            {{ form.confirm_password }}
+            {% if form.confirm_password.errors %}
+                <ul class="error-list">
+                    {% for error in form.confirm_password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Form-level errors -->
+    {% if form.non_field_errors %}
+        <ul class="error-list mb-30">
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Buttons -->
+    <div class="button-group">
+        <a href="{% url 'home' %}" class="btn btn-secondary">← Back</a>
+        <button type="submit" class="btn btn-primary">Create Account</button>
+    </div>
+</form>
+{% endblock %}
