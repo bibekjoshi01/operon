@@ -1,6 +1,6 @@
-from django.contrib import admin
 from django.urls import path
+from tenants.admin_site import public_admin_site
 
 urlpatterns = [
-    path("admin/", admin.site.urls),  
+    path("admin/", public_admin_site.urls),
 ]

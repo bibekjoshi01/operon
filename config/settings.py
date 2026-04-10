@@ -27,6 +27,7 @@ TENANT_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "src.dashboard"
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [
