@@ -11,7 +11,7 @@ logs/
 
 media/
 
-
+staticfiles/
 # Distribution / packaging
 .Python
 build/
