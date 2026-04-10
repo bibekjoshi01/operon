@@ -1,36 +1,63 @@
-# Operon — Django SaaS starter
+# Operon — Django SaaS Starter
 
-Quick scaffold for a modern Django SaaS app with subdomain-based tenants and per-client admin dashboards.
+A modern Django SaaS application scaffold with multi-tenant support, subdomain-based tenant routing, and per-tenant admin dashboards.
 
-Quick start
+## Prerequisites
 
-1. Create a virtualenv and install requirements:
+- Python 3.9+
+- PostgreSQL 12+
+- pip or pipenv
+
+## Environment Setup
+
+### 1. Clone and Create Virtual Environment
 
 ```bash
+git clone <repo-url>
+cd operon
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+### 2. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-2. Run migrations and create a superuser:
+### 3. Configure Environment Variables
+
+Create a `.env` file in the project root:
+
+### 4. Initialize Database
+
+Create the PostgreSQL database:
 
 ```bash
-python manage.py migrate
-python manage.py createsuperuser
+createdb operon_db
 ```
 
-3. Start the development server:
+Run shared migrations (creates shared schema):
+
+```bash
+python manage.py migrate_schemas --shared
+```
+
+### 6. Start Development Server
 
 ```bash
 python manage.py runserver
 ```
 
-4. Open the public admin at http://localhost:8000/admin and create a Tenant (or Client).
+Access the application:
 
-5. (Optional) Add a hosts entry for a tenant subdomain to test subdomain routing, e.g. `tenant1.localhost`.
+- **Public Portal**: http://localhost:8000
 
-6. Visit the tenant dashboard or admin at the tenant host.
+### Database Migrations
 
+For shared schema:
+
+```bash
+python manage.py makemigrations
 python manage.py migrate_schemas --shared
-python manage.py shell -c "from tenants.models import Tenant, Domain; t=Tenant.objects.create(schema_name='tenant2', name='Tenant2', subdomain='tenant2', is_active=True); Domain.objects.create(domain='tenant2.localhost', tenant=t, is_primary=False)"
-python manage.py create_tenant_user tenant1 admin admin123 --is_staff --is_superuser
+```
