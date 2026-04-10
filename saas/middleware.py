@@ -1,6 +1,6 @@
 from django.utils.deprecation import MiddlewareMixin
 from django.conf import settings
-from clients.models import Client
+from tenants.models import Tenant
 
 
 class SubdomainTenantMiddleware(MiddlewareMixin):
@@ -11,6 +11,10 @@ class SubdomainTenantMiddleware(MiddlewareMixin):
     """
 
     def process_request(self, request):
+        # If django-tenants already resolved a tenant, leave it in place.
+        if getattr(request, 'tenant', None) is not None:
+            return
+
         host = request.get_host().split(':')[0]
         parts = host.split('.')
         tenant = None
@@ -19,7 +23,7 @@ class SubdomainTenantMiddleware(MiddlewareMixin):
             subdomain = parts[0]
             if subdomain and subdomain.lower() != 'www':
                 try:
-                    tenant = Client.objects.filter(subdomain=subdomain, is_active=True).first()
+                    tenant = Tenant.objects.filter(subdomain=subdomain, is_active=True).first()
                 except Exception:
                     tenant = None
         request.tenant = tenant
