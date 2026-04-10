@@ -18,9 +18,9 @@ def _is_public_request(request) -> bool:
 
 @admin.register(Tenant, site=tenant_admin_site)
 class TenantAdmin(admin.ModelAdmin):
-    list_display = ('name', 'subdomain', 'schema_name', 'is_active', 'created')
-    search_fields = ('name', 'subdomain', 'schema_name')
-    prepopulated_fields = {'schema_name': ('subdomain',)}
+    list_display = ("name", "subdomain", "schema_name", "is_active", "created")
+    search_fields = ("name", "subdomain", "schema_name")
+    prepopulated_fields = {"schema_name": ("subdomain",)}
 
     # Only allow management from public/vendor admin
     def has_module_permission(self, request):
@@ -41,33 +41,47 @@ class TenantAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         is_new = obj.pk is None
         # Auto-fill schema_name from subdomain when missing (django-tenants requirement)
-        if not getattr(obj, 'schema_name', None):
-            obj.schema_name = (obj.subdomain or '').replace('-', '_')
+        if not getattr(obj, "schema_name", None):
+            obj.schema_name = (obj.subdomain or "").replace("-", "_")
         super().save_model(request, obj, form, change)
 
         if is_new:
             # create domain mapping if not exists
             try:
-                base_domain = getattr(settings, 'TENANT_BASE_DOMAIN', 'localhost')
-                Domain.objects.get_or_create(domain=f"{obj.subdomain}.{base_domain}", tenant=obj)
+                base_domain = getattr(settings, "TENANT_BASE_DOMAIN", "localhost")
+                Domain.objects.get_or_create(
+                    domain=f"{obj.subdomain}.{base_domain}", tenant=obj
+                )
             except Exception:
                 pass
 
             # If django-tenants is enabled, attempt to run tenant migrations
-            if getattr(settings, 'USE_TENANTS', False):
+            if getattr(settings, "USE_TENANTS", False):
                 try:
                     # TenantMixin.auto_create_schema will also create + sync schema on save;
                     # this explicit call ensures migrations run if auto_create_schema is False.
-                    call_command('migrate_schemas', schema_name=getattr(obj, 'schema_name', None), interactive=False)
-                    messages.success(request, f"Tenant schema created and migrated: {obj}")
+                    call_command(
+                        "migrate_schemas",
+                        schema_name=getattr(obj, "schema_name", None),
+                        interactive=False,
+                    )
+                    messages.success(
+                        request, f"Tenant schema created and migrated: {obj}"
+                    )
                 except Exception as exc:
-                    messages.warning(request, f"Tenant created but tenant migrations failed: {exc}")
+                    messages.warning(
+                        request, f"Tenant created but tenant migrations failed: {exc}"
+                    )
 
 
 @admin.register(Domain, site=tenant_admin_site)
 class DomainAdmin(admin.ModelAdmin):
-    list_display = ('domain', 'tenant', 'is_primary') if hasattr(Domain, 'is_primary') else ('domain', 'tenant')
-    search_fields = ('domain',)
+    list_display = (
+        ("domain", "tenant", "is_primary")
+        if hasattr(Domain, "is_primary")
+        else ("domain", "tenant")
+    )
+    search_fields = ("domain",)
 
     # Only expose domains in public/vendor admin
     def has_module_permission(self, request):

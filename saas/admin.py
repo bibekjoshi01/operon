@@ -8,17 +8,17 @@ class TenantAdminSite(admin.AdminSite):
 
     def each_context(self, request):
         ctx = super().each_context(request)
-        tenant = getattr(request, 'tenant', None)
+        tenant = getattr(request, "tenant", None)
         if tenant:
-            ctx['site_header'] = f"{tenant.name} Admin"
-            ctx['site_title'] = f"{tenant.name} Admin"
+            ctx["site_header"] = f"{tenant.name} Admin"
+            ctx["site_title"] = f"{tenant.name} Admin"
         else:
-            ctx['site_header'] = self.site_header
-            ctx['site_title'] = self.site_title
+            ctx["site_header"] = self.site_header
+            ctx["site_title"] = self.site_title
         return ctx
 
 
-tenant_admin_site = TenantAdminSite(name='admin')
+tenant_admin_site = TenantAdminSite(name="admin")
 
 
 def _copy_default_registry_to_tenant_site():
