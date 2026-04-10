@@ -13,21 +13,16 @@ ALLOWED_HOSTS = ["*"]
 SHARED_APPS = (
     "django_tenants",
     "tenants",
-    "django.contrib.contenttypes",
-    "django.contrib.auth",
-    "django.contrib.admin",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
 )
 
 TENANT_APPS = (
     "django.contrib.contenttypes",
-    "django.contrib.auth",
-    "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "src.dashboard"
+    "django.contrib.auth",
+    "django.contrib.sessions",
+    "django.contrib.admin",
+    "src.dashboard",
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [
@@ -45,8 +40,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "config.urls"
-PUBLIC_SCHEMA_URLCONF = "config.public_urls"
+ROOT_URLCONF = "config.tenant_urls"
+PUBLIC_SCHEMA_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -65,7 +60,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-AUTH_USER_MODEL = "tenants.User"
 
 DATABASES = {
     "default": {

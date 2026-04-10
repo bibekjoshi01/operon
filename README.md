@@ -32,5 +32,5 @@ python manage.py runserver
 6. Visit the tenant dashboard or admin at the tenant host.
 
 python manage.py migrate_schemas --shared
-python manage.py createsuperuser --schema=public
-python manage.py shell -c "from tenants.models import Tenant, Domain; t=Tenant.objects.create(schema_name='public', name='Vendor', subdomain='public', is_active=True); Domain.objects.create(domain='localhost', tenant=t, is_primary=True)"
+python manage.py shell -c "from tenants.models import Tenant, Domain; t=Tenant.objects.create(schema_name='tenant2', name='Tenant2', subdomain='tenant2', is_active=True); Domain.objects.create(domain='tenant2.localhost', tenant=t, is_primary=False)"
+python manage.py create_tenant_user tenant1 admin admin123 --is_staff --is_superuser
