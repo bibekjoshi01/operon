@@ -30,3 +30,7 @@ python manage.py runserver
 5. (Optional) Add a hosts entry for a tenant subdomain to test subdomain routing, e.g. `tenant1.localhost`.
 
 6. Visit the tenant dashboard or admin at the tenant host.
+
+python manage.py migrate_schemas --shared
+python manage.py createsuperuser --schema=public
+python manage.py shell -c "from tenants.models import Tenant, Domain; t=Tenant.objects.create(schema_name='public', name='Vendor', subdomain='public', is_active=True); Domain.objects.create(domain='localhost', tenant=t, is_primary=True)"
