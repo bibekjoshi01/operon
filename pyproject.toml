@@ -3,9 +3,9 @@ requires = ["hatchling>=1.24.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "tabflux-backend-service"
+name = "operon-backend-service"
 version = "0.1.0"
-description = "Tabflux Backend Service"
+description = "Operon Backend Service"
 readme = "README.md"
 requires-python = ">=3.11"
 

@@ -1,7 +1,8 @@
-from django.urls import path
 from django.conf import settings
-from website.views import home, register_tenant, registration_success
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import path
+
+from website.views import home, register_tenant, registration_success
 
 urlpatterns = [
     path("", home, name="home"),

@@ -1,7 +1,6 @@
-import uuid
 from django.db import models
 from django.utils import timezone
-from django_tenants.models import TenantMixin, DomainMixin
+from django_tenants.models import DomainMixin, TenantMixin
 
 
 class Tenant(TenantMixin):
@@ -50,9 +49,7 @@ class Domain(DomainMixin):
 class TenantProfile(models.Model):
     """Extended business info."""
 
-    tenant = models.OneToOneField(
-        Tenant, on_delete=models.CASCADE, related_name="profile"
-    )
+    tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE, related_name="profile")
 
     admin_email = models.EmailField()
     phone = models.CharField(max_length=20, blank=True)

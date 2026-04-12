@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
+
+from tenants.models import Domain, Tenant
 from website.forms import TenantRegistrationForm
-from tenants.models import Tenant, Domain
 
 
 def home(request):
@@ -25,7 +26,7 @@ def register_tenant(request):
                 )
 
                 # Create domain mapping
-                domain = Domain.objects.create(
+                Domain.objects.create(
                     domain=f"{form.cleaned_data['subdomain']}.localhost",
                     tenant=tenant,
                     is_primary=True,

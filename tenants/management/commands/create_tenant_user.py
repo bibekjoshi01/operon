@@ -1,6 +1,6 @@
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django_tenants.utils import schema_context
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -25,7 +25,7 @@ class Command(BaseCommand):
         is_staff = options["is_staff"]
 
         with schema_context(schema_name):
-            user = User.objects.create_user(
+            User.objects.create_user(
                 username=username,
                 password=password,
                 is_staff=is_staff,

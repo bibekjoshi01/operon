@@ -4,8 +4,8 @@ A modern Django SaaS application scaffold with multi-tenant support, subdomain-b
 
 ## Prerequisites
 
-- Python 3.9+
-- PostgreSQL 12+
+- Python 3.10+
+- PostgreSQL 14+
 - pip or pipenv
 
 ## Environment Setup
