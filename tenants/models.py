@@ -54,10 +54,7 @@ class TenantProfile(models.Model):
     admin_email = models.EmailField()
     phone = models.CharField(max_length=20, blank=True)
 
-    industry = models.CharField(max_length=100, blank=True)
-    website = models.URLField(blank=True)
-
-    logo_url = models.URLField(blank=True)
+    logo = models.ImageField(blank=True, null=True)
     description = models.TextField(blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
