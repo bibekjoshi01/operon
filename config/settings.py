@@ -1,7 +1,8 @@
-from .jazzmin_settings import *
+# ruff: noqa
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from .jazzmin_settings import *
 
 load_dotenv()
 
@@ -12,18 +13,21 @@ SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 ALLOWED_HOSTS = ["*"]
 
-SHARED_APPS = ("django_tenants", "tenants", "website")
+SHARED_APPS = (
+    "jazzmin",
+    "django_ckeditor_5",
+    "django_tenants",
+    "tenants",
+    "website",
+)
 
 TENANT_APPS = (
-    "jazzmin",
     "django.contrib.contenttypes",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.auth",
     "django.contrib.sessions",
     "django.contrib.admin",
-    "django_ckeditor_5",
-    "src.dashboard",
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -80,9 +84,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 
 SESSION_COOKIE_DOMAIN = None
 CSRF_COOKIE_DOMAIN = None
@@ -204,7 +205,7 @@ LOGGING = {
 # ------------------------------------------------------------------------------
 STATIC_ROOT = str(BASE_DIR / "staticfiles")
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [str(APPS_DIR / "static")]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",

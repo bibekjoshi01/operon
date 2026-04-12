@@ -77,7 +77,7 @@ JAZZMIN_SETTINGS = {
     "default_icon_children": "fas fa-circle",
     # Use modals instead of popups
     "related_modal_active": False,
-    "custom_css": "css/jazzmin.css",
+    # "custom_css": "css/jazzmin.css",
     "custom_js": None,
     "use_google_fonts_cdn": True,
     "show_ui_builder": False,
