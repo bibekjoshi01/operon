@@ -88,3 +88,10 @@ For shared schema:
 python manage.py makemigrations
 python manage.py migrate_schemas --shared
 ```
+
+### Load Data
+
+```bash
+python manage.py all_tenants_command loaddata item_units.json
+python manage.py all_tenants_command loaddata warehouse.json
+```

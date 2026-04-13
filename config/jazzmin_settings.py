@@ -31,6 +31,13 @@ JAZZMIN_SETTINGS = {
         # Party Management
         "party_management.Customer": "fas fa-user-tie",
         "party_management.Supplier": "fas fa-truck-loading",
+        # Items
+        "inventory.Item": "fas fa-box",
+        "inventory.ItemUnit": "fas fa-balance-scale",
+        "inventory.ItemBrand": "fas fa-copyright",
+        "inventory.ItemCategory": "fas fa-sitemap",
+        # Warehouse / Stock
+        "inventory.Warehouse": "fas fa-warehouse",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
