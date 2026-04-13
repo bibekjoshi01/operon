@@ -22,7 +22,9 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ### 2. Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements/dev.txt
+
+pre-commit install
 ```
 
 ### 3. Configure Environment Variables
@@ -41,6 +43,31 @@ Run shared migrations (creates shared schema):
 
 ```bash
 python manage.py migrate_schemas --shared
+```
+
+### 5. Creating Public Tenant
+
+```bash
+python manage.py shell
+```
+
+```python
+from tenants.models import Tenant, Domain
+
+# Create tenant
+tenant = Tenant.objects.create(
+    schema_name='public',
+    name='Website',
+    subdomain='',
+    is_active=True
+)
+
+# Create domain mapping
+Domain.objects.create(
+    domain='localhost',
+    tenant=tenant,
+    is_primary=True
+)
 ```
 
 ### 6. Start Development Server
