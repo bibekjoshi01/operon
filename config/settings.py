@@ -30,6 +30,7 @@ TENANT_APPS = (
     "django.contrib.sessions",
     "django.contrib.admin",
     "src.user",
+    "src.party_management",
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -83,7 +84,7 @@ TENANT_DOMAIN_MODEL = "tenants.Domain"
 DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kathmandu"
 USE_I18N = True
 USE_TZ = True
 

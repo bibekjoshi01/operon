@@ -28,6 +28,9 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         # Custom User module
         "auth.User": "fas fa-user",
+        # Party Management
+        "party_management.Customer": "fas fa-user-tie",
+        "party_management.Supplier": "fas fa-truck-loading",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
