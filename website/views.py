@@ -1,6 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.management import call_command
+from django.db import connection
 from django.shortcuts import redirect, render
+from django_tenants.utils import tenant_context
 
 from tenants.models import Domain, Tenant
 from website.forms import TenantRegistrationForm
@@ -32,8 +35,11 @@ def register_tenant(request):
                     is_primary=True,
                 )
 
-                # Set tenant for creating user in tenant schema
-                from django_tenants.utils import tenant_context
+                # 3. RUN MIGRATIONS FOR THIS TENANT (CRITICAL)
+                call_command("migrate_schemas", schema_name=tenant.schema_name, interactive=False)
+
+                # 4. RESET CONNECTION (VERY IMPORTANT)
+                connection.set_schema_to_public()
 
                 # Create admin user for the tenant
                 with tenant_context(tenant):

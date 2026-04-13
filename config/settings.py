@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from .jazzmin_settings import *
+from .ckeditor_settings import *
 
 load_dotenv()
 
