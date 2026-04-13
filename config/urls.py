@@ -2,12 +2,10 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 
-from website.views import home, register_tenant, registration_success
+from website.views import home
 
 urlpatterns = [
     path("", home, name="home"),
-    path("register/", register_tenant, name="register_tenant"),
-    path("register/success/", registration_success, name="registration_success"),
 ]
 
 if settings.DEBUG:
