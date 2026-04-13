@@ -193,4 +193,4 @@ CKEDITOR_5_CONFIGS = {
     },
 }
 
-CKEDITOR_5_CUSTOM_CSS = "css/custom.css"
+CKEDITOR_5_CUSTOM_CSS = "css/ckeditor.css"
