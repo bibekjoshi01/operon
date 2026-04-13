@@ -15,8 +15,8 @@ class SupplierAdmin(BaseAdmin):
         "email",
         "pan_vat_no",
         "credit_limit",
-        "is_active",
         "created_at",
+        "is_active",
         "edit_action",
     )
 
@@ -33,7 +33,19 @@ class SupplierAdmin(BaseAdmin):
     )
 
     fieldsets = (
-        ("Basic Info", {"fields": ("full_name", "email", "phone_no", "phone_no_alt", "address")}),
+        (
+            "Basic Info",
+            {
+                "fields": (
+                    "full_name",
+                    "email",
+                    "phone_no",
+                    "phone_no_alt",
+                    "address",
+                    "is_active",
+                )
+            },
+        ),
         ("Financial", {"fields": ("pan_vat_no", "credit_limit")}),
     )
 
@@ -48,8 +60,8 @@ class CustomerAdmin(BaseAdmin):
         "email",
         "pan_vat_no",
         "credit_limit",
-        "is_active",
         "created_at",
+        "is_active",
         "edit_action",
     )
 
@@ -66,6 +78,18 @@ class CustomerAdmin(BaseAdmin):
     )
 
     fieldsets = (
-        ("Basic Info", {"fields": ("full_name", "email", "phone_no", "phone_no_alt", "address")}),
+        (
+            "Basic Info",
+            {
+                "fields": (
+                    "full_name",
+                    "email",
+                    "phone_no",
+                    "phone_no_alt",
+                    "address",
+                    "is_active",
+                )
+            },
+        ),
         ("Financial", {"fields": ("pan_vat_no", "credit_limit")}),
     )

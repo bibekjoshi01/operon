@@ -14,15 +14,13 @@ class ItemUnitAdmin(BaseAdmin):
         "name",
         "short_name",
         "created_at",
+        "is_active",
         "edit_action",
     )
 
     search_fields = ("name", "short_name")
-    fieldsets = (("Unit Info", {"fields": ("name", "short_name")}),)
+    fieldsets = (("Unit Info", {"fields": ("name", "short_name", "is_active")}),)
     list_filter = ("created_at",)
-
-    def has_delete_permission(self, request, obj=...):
-        return False
 
 
 @admin.register(ItemBrand)
@@ -33,17 +31,15 @@ class ItemBrandAdmin(BaseAdmin):
         "serial_number",
         "name",
         "created_at",
+        "is_active",
         "edit_action",
     )
 
     search_fields = ("name",)
 
-    fieldsets = (("Brand Info", {"fields": ("name",)}),)
+    fieldsets = (("Brand Info", {"fields": ("name", "is_active")}),)
 
     list_filter = ("created_at",)
-
-    def has_delete_permission(self, request, obj=...):
-        return False
 
 
 @admin.register(ItemCategory)
@@ -56,16 +52,14 @@ class ItemCategoryAdmin(BaseAdmin):
         "code",
         "parent",
         "created_at",
+        "is_active",
         "edit_action",
     )
 
     search_fields = ("name", "code")
     list_filter = ("created_at", "parent")
 
-    fieldsets = (("Category Info", {"fields": ("name", "code", "parent")}),)
-
-    def has_delete_permission(self, request, obj=...):
-        return False
+    fieldsets = (("Category Info", {"fields": ("name", "code", "parent", "is_active")}),)
 
 
 @admin.register(Warehouse)
@@ -78,13 +72,14 @@ class WarehouseAdmin(BaseAdmin):
         "location",
         "is_default",
         "created_at",
+        "is_active",
         "edit_action",
     )
 
     search_fields = ("name", "location")
     list_filter = ("is_default", "created_at")
 
-    fieldsets = (("Warehouse Info", {"fields": ("name", "location", "is_default")}),)
+    fieldsets = (("Warehouse Info", {"fields": ("name", "location", "is_default", "is_active")}),)
 
 
 @admin.register(Item)
@@ -99,8 +94,8 @@ class ItemAdmin(BaseAdmin):
         "brand",
         "unit",
         "selling_price",
-        "stock_alert_qty",
         "created_at",
+        "is_active",
         "edit_action",
     )
 
@@ -114,6 +109,9 @@ class ItemAdmin(BaseAdmin):
     )
 
     fieldsets = (
-        ("Basic Info", {"fields": ("name", "code", "category", "brand", "unit", "description")}),
+        (
+            "Basic Info",
+            {"fields": ("name", "code", "category", "brand", "unit", "description", "is_active")},
+        ),
         ("Pricing & Stock", {"fields": ("selling_price", "stock_alert_qty")}),
     )

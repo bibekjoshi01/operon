@@ -58,3 +58,6 @@ class BaseAdmin(admin.ModelAdmin):
 
         # Normal users → only their data
         return qs.filter(created_by=request.user)
+
+    def has_delete_permission(self, request, obj=...):
+        return False
