@@ -38,6 +38,7 @@ JAZZMIN_SETTINGS = {
         "inventory.ItemCategory": "fas fa-sitemap",
         # Warehouse / Stock
         "inventory.Warehouse": "fas fa-warehouse",
+        "purchase.Purchase": "fas fa-shopping-cart",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

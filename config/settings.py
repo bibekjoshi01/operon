@@ -29,8 +29,10 @@ TENANT_APPS = (
     "django.contrib.auth",
     "django.contrib.sessions",
     "django.contrib.admin",
+    "src.core",
     "src.user",
     "src.party_management",
+    "src.purchase",
     "src.inventory",
 )
 
