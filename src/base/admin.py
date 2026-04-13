@@ -61,3 +61,26 @@ class BaseAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=...):
         return False
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        formfield = super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+        model = db_field.remote_field.model
+
+        if hasattr(model, "is_active"):
+            qs = formfield.queryset.filter(is_active=True)
+
+            # 👇 IMPORTANT: include currently selected object
+            if request.resolver_match and request.resolver_match.kwargs.get("object_id"):
+                obj_id = request.resolver_match.kwargs["object_id"]
+                try:
+                    current_obj = model.objects.get(pk=obj_id)
+
+                    # include inactive selected value
+                    qs = (qs | model.objects.filter(pk=current_obj.pk)).distinct()
+                except model.DoesNotExist:
+                    pass
+
+            formfield.queryset = qs
+
+        return formfield
