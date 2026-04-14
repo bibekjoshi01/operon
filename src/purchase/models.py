@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from src.base.models import TimeStampedModel
@@ -19,10 +20,18 @@ class Purchase(TimeStampedModel):
 
     warehouse = models.ForeignKey(Warehouse, on_delete=models.PROTECT, related_name="purchases")
 
-    total_discount = models.DecimalField(max_digits=12, decimal_places=2)
-    total_tax = models.DecimalField(max_digits=12, decimal_places=2)
-    sub_total = models.DecimalField(max_digits=12, decimal_places=2, editable=False)
-    grand_total = models.DecimalField(max_digits=12, decimal_places=2, editable=False)
+    total_discount = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
+    total_tax = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
+    sub_total = models.DecimalField(
+        max_digits=12, decimal_places=2, editable=False, validators=[MinValueValidator(0)]
+    )
+    grand_total = models.DecimalField(
+        max_digits=12, decimal_places=2, editable=False, validators=[MinValueValidator(0)]
+    )
 
     notes = models.TextField(blank=True)
 
@@ -44,17 +53,33 @@ class PurchaseItem(TimeStampedModel):
 
     item = models.ForeignKey(Item, on_delete=models.PROTECT)
 
-    quantity = models.DecimalField(max_digits=12, decimal_places=2)
-    rate = models.DecimalField(max_digits=12, decimal_places=2)
+    quantity = models.DecimalField(
+        max_digits=12, decimal_places=2, default=1, validators=[MinValueValidator(1)]
+    )
+    rate = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
 
-    tax_rate = models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    tax_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    tax_rate = models.DecimalField(
+        max_digits=6, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
+    tax_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
 
-    discount_rate = models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    discount_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    discount_rate = models.DecimalField(
+        max_digits=6, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
+    discount_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
 
-    gross_amount = models.DecimalField(max_digits=12, decimal_places=2, editable=False)
-    net_amount = models.DecimalField(max_digits=12, decimal_places=2, editable=False)
+    gross_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, editable=False, validators=[MinValueValidator(0)]
+    )
+    net_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, editable=False, validators=[MinValueValidator(0)]
+    )
 
     def __str__(self) -> str:
         return f"{self.item.name} x {self.quantity}"
@@ -68,12 +93,16 @@ class PurchaseItem(TimeStampedModel):
         constraints = [
             models.UniqueConstraint(fields=["purchase", "item"], name="unique_item_per_purchase")
         ]
+        verbose_name = "Purchase Item"
+        verbose_name_plural = "Purchase Items"
 
 
 class PurchasePaymentDetail(TimeStampedModel):
     purchase = models.ForeignKey(Purchase, on_delete=models.PROTECT, related_name="payment_details")
     payment_mode = models.ForeignKey(PaymentMethod, on_delete=models.PROTECT)
-    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    amount = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
 
     def __str__(self) -> str:
         return self.payment_mode.name
@@ -83,6 +112,8 @@ class PurchasePaymentDetail(TimeStampedModel):
             models.Index(fields=["purchase"]),
             models.Index(fields=["payment_mode"]),
         ]
+        verbose_name = "Payment Detail"
+        verbose_name_plural = "Payment Details"
 
 
 class PurchaseAdditionalCharge(TimeStampedModel):
@@ -90,7 +121,9 @@ class PurchaseAdditionalCharge(TimeStampedModel):
     purchase = models.ForeignKey(
         Purchase, on_delete=models.PROTECT, related_name="additional_charges"
     )
-    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    amount = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0, validators=[MinValueValidator(0)]
+    )
     remarks = models.CharField(max_length=50, blank=True)
 
     class Meta:
@@ -98,6 +131,8 @@ class PurchaseAdditionalCharge(TimeStampedModel):
             models.Index(fields=["purchase"]),
             models.Index(fields=["charge_type"]),
         ]
+        verbose_name = "Additional Charge"
+        verbose_name_plural = "Additional Charges"
 
     def __str__(self) -> str:
         return self.charge_type.name

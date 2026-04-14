@@ -40,3 +40,60 @@
 .main-footer .float-right {
   display: none !important;
 }
+
+/* Submit Buttons Fix*/
+/* -------------------------------------------- */
+
+/* 1. Make form full width */
+.col-lg-9 {
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+}
+
+/* 2. Move sidebar below form */
+.col-lg-3 {
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+  margin-top: 20px;
+}
+
+/* 3. Turn actions into horizontal row */
+#jazzy-actions > div {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* 4. Fix bootstrap stacking */
+#jazzy-actions .form-group {
+  margin: 0 !important;
+}
+
+/* 5. Fix full-width buttons */
+#jazzy-actions .form-control {
+  width: auto !important;
+  display: inline-block !important;
+}
+
+/* ONLY form cards inside tab content (Item, Supplier, etc.) */
+.tab-content .tab-pane .card {
+  box-shadow: none !important;
+  border: 0px solid #e9ecef !important;
+}
+
+/* reduce padding from p-5 (3rem) to 2rem */
+.tab-content .tab-pane .card-body {
+  padding: 1rem !important;
+}
+
+.form-group .col-sm-3 {
+  flex: 0 0 15% !important;
+  max-width: 15% !important;
+}
+
+.form-group .col-sm-7 {
+  flex: 0 0 80% !important;
+  max-width: 80% !important;
+}

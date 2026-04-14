@@ -59,7 +59,19 @@ class ItemCategoryAdmin(BaseAdmin):
     search_fields = ("name", "code")
     list_filter = ("created_at", "parent")
 
-    fieldsets = (("Category Info", {"fields": ("name", "code", "parent", "is_active")}),)
+    fieldsets = (
+        (
+            "Category Info",
+            {
+                "fields": (
+                    "name",
+                    "code",
+                    "parent",
+                    "is_active",
+                )
+            },
+        ),
+    )
 
 
 @admin.register(Warehouse)
