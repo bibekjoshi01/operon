@@ -11,6 +11,7 @@ class PurchaseItemInline(admin.TabularInline):
 @admin.register(Purchase)
 class PurchaseAdmin(admin.ModelAdmin):
     inlines = [PurchaseItemInline]
+    save_on_top = True
 
     list_display = (
         "bill_no",
