@@ -1,4 +1,6 @@
+// ----------------------------------------------------------
 // Handling Form Groups (Multiple columns)
+// ----------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
   document
     .querySelectorAll(".form-group .row > label.col-sm-3")
@@ -25,7 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Remove Eye Icon
+// ----------------------------------------------------------
+// Remove Eye Icon from Dropdown (Related Field)
+// ----------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
   document
     .querySelectorAll(".related-widget-wrapper-link.view-related")
@@ -38,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// ----------------------------------------------------------
 // Sidebar Search Panel
 // ----------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {

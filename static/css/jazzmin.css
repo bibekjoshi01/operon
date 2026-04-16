@@ -166,3 +166,10 @@
 .sidebar-search::placeholder {
   color: #aaa;
 }
+
+/* Search Bar Results in Page */
+/* // ---------------------------------------------------------- */
+#changelist-search #search_group span {
+  margin-left: 20px;
+  font-size: 16px;
+}
