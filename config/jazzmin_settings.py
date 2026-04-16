@@ -21,7 +21,14 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,
     "hide_apps": [],
     "hide_models": [],
-    "order_with_respect_to": [],
+    "order_with_respect_to": [
+        "party_management",
+        "sales",
+        "purchase",
+        "inventory",
+        "user",
+        "core",
+    ],
     "custom_links": {},
     # for the full list of 5.13.0 free icon classes
     "icons": {
@@ -41,7 +48,10 @@ JAZZMIN_SETTINGS = {
         "inventory.ItemCategory": "fas fa-sitemap",
         "inventory.Warehouse": "fas fa-warehouse",
         # Purchase & Sales
-        "purchase.Purchase": "fas fa-shopping-cart",
+        "purchase.PurchaseInvoice": "fas fa-file-invoice-dollar",
+        "purchase.PurchaseReturn": "fas fa-undo-alt",
+        "sales.SalesInvoice": "fas fa-cash-register",
+        "sales.SalesReturn": "fas fa-undo",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

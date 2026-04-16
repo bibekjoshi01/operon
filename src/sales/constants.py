@@ -6,6 +6,6 @@ class PayTypes(BaseEnum):
     CREDIT = "CREDIT"
 
 
-class PurchaseTypes(BaseEnum):
-    PURCHASE = "PURCHASE"
+class SaleTypes(BaseEnum):
+    SALE = "SALE"
     RETURN = "RETURN"

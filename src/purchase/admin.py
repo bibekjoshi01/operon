@@ -1,8 +1,15 @@
 from django.contrib import admin
 
 from src.base.admin import BaseAdmin
+from src.purchase.constants import PurchaseTypes
 
-from .models import Purchase, PurchaseAdditionalCharge, PurchaseItem, PurchasePaymentDetail
+from .models import (
+    PurchaseAdditionalCharge,
+    PurchaseInvoice,
+    PurchaseItem,
+    PurchasePaymentDetail,
+    PurchaseReturn,
+)
 
 
 class PurchaseItemInline(admin.TabularInline):
@@ -14,7 +21,7 @@ class PurchaseItemInline(admin.TabularInline):
 class PurchasePaymentInline(admin.TabularInline):
     model = PurchasePaymentDetail
     extra = 1
-    fields = ("payment_mode", "amount")
+    fields = ("payment_mode", "amount", "remarks")
 
 
 class PurchaseAdditionalChargeInline(admin.TabularInline):
@@ -23,10 +30,13 @@ class PurchaseAdditionalChargeInline(admin.TabularInline):
     fields = ("charge_type", "amount", "remarks")
 
 
-@admin.register(Purchase)
+@admin.register(PurchaseInvoice)
 class PurchaseAdmin(BaseAdmin):
     inlines = [PurchaseItemInline, PurchasePaymentInline, PurchaseAdditionalChargeInline]
     save_on_top = True
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(purchase_type=PurchaseTypes.PURCHASE)
 
     list_display = (
         "bill_no",
@@ -56,3 +66,9 @@ class PurchaseAdmin(BaseAdmin):
             super().save_model(request, obj, form, change)
         else:
             super().save_model(request, obj, form, change)
+
+
+@admin.register(PurchaseReturn)
+class PurchaseReturnAdmin(BaseAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(purchase_type=PurchaseTypes.RETURN)
