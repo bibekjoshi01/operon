@@ -37,10 +37,8 @@ class SupplierAdmin(BaseAdmin):
             "Basic Info",
             {
                 "fields": (
-                    "full_name",
-                    "email",
-                    "phone_no",
-                    "phone_no_alt",
+                    ("full_name", "email"),
+                    ("phone_no", "phone_no_alt"),
                     "address",
                     "is_active",
                 )
@@ -82,10 +80,8 @@ class CustomerAdmin(BaseAdmin):
             "Basic Info",
             {
                 "fields": (
-                    "full_name",
-                    "email",
-                    "phone_no",
-                    "phone_no_alt",
+                    ("full_name", "email"),
+                    ("phone_no", "phone_no_alt"),
                     "address",
                     "is_active",
                 )

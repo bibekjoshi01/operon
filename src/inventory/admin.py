@@ -19,7 +19,7 @@ class ItemUnitAdmin(BaseAdmin):
     )
 
     search_fields = ("name", "short_name")
-    fieldsets = (("Unit Info", {"fields": ("name", "short_name", "is_active")}),)
+    fieldsets = (("Unit Info", {"fields": (("name", "short_name"), "is_active")}),)
     list_filter = ("created_at",)
 
 
@@ -64,8 +64,7 @@ class ItemCategoryAdmin(BaseAdmin):
             "Category Info",
             {
                 "fields": (
-                    "name",
-                    "code",
+                    ("name", "code"),
                     "parent",
                     "is_active",
                 )
@@ -91,7 +90,18 @@ class WarehouseAdmin(BaseAdmin):
     search_fields = ("name", "location")
     list_filter = ("is_default", "created_at")
 
-    fieldsets = (("Warehouse Info", {"fields": ("name", "location", "is_default", "is_active")}),)
+    fieldsets = (
+        (
+            "Warehouse Info",
+            {
+                "fields": (
+                    ("name", "location"),
+                    "is_default",
+                    "is_active",
+                )
+            },
+        ),
+    )
 
 
 @admin.register(Item)
@@ -123,7 +133,16 @@ class ItemAdmin(BaseAdmin):
     fieldsets = (
         (
             "Basic Info",
-            {"fields": ("name", "code", "category", "brand", "unit", "description", "is_active")},
+            {
+                "fields": (
+                    ("name", "code"),
+                    "category",
+                    "brand",
+                    "unit",
+                    "description",
+                    "is_active",
+                )
+            },
         ),
         ("Pricing & Stock", {"fields": ("selling_price", "stock_alert_qty")}),
     )

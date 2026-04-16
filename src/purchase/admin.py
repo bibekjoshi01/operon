@@ -1,7 +1,6 @@
-from django import forms
 from django.contrib import admin
-from django.contrib.admin.widgets import AdminDateWidget
-from django.db import models
+
+from src.base.admin import BaseAdmin
 
 from .models import Purchase, PurchaseAdditionalCharge, PurchaseItem, PurchasePaymentDetail
 
@@ -10,10 +9,6 @@ class PurchaseItemInline(admin.TabularInline):
     model = PurchaseItem
     extra = 1
     fields = ("item", "quantity", "rate", "tax_rate", "discount_rate")
-
-    formfield_overrides = {
-        models.DecimalField: {"widget": forms.NumberInput(attrs={"style": "width:100px;"})}
-    }
 
 
 class PurchasePaymentInline(admin.TabularInline):
@@ -29,7 +24,7 @@ class PurchaseAdditionalChargeInline(admin.TabularInline):
 
 
 @admin.register(Purchase)
-class PurchaseAdmin(admin.ModelAdmin):
+class PurchaseAdmin(BaseAdmin):
     inlines = [PurchaseItemInline, PurchasePaymentInline, PurchaseAdditionalChargeInline]
     save_on_top = True
 
@@ -46,26 +41,14 @@ class PurchaseAdmin(admin.ModelAdmin):
             "Basic Info",
             {
                 "fields": (
-                    "pay_type",
-                    "bill_no",
-                    "bill_date",
-                    "supplier",
+                    ("pay_type", "supplier"),
+                    ("bill_no", "bill_date"),
                     "warehouse",
                     "notes",
                 ),
             },
         ),
     )
-
-    formfield_overrides = {
-        models.CharField: {"widget": forms.TextInput(attrs={"style": "width:200px;"})},
-        models.IntegerField: {"widget": forms.NumberInput(attrs={"style": "width:200px;"})},
-        models.DateField: {"widget": AdminDateWidget(attrs={"style": "width:180px;"})},
-        models.TextField: {
-            "widget": forms.Textarea(attrs={"rows": 3, "style": "width:100%; max-width:100%;"})
-        },
-        models.ForeignKey: {"widget": forms.Select(attrs={"style": "width:380px;"})},
-    }
 
     def save_model(self, request, obj, form, change):
         if not change:

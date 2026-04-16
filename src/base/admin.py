@@ -1,5 +1,7 @@
+from django import forms
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
+from django.db import models
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -82,5 +84,24 @@ class BaseAdmin(admin.ModelAdmin):
                     pass
 
             formfield.queryset = qs
+
+        return formfield
+
+    formfield_overrides = {
+        models.CharField: {"widget": forms.TextInput(attrs={"style": "width:300px;"})},
+        models.EmailField: {"widget": forms.EmailInput(attrs={"style": "width:300px;"})},
+        models.IntegerField: {"widget": forms.NumberInput(attrs={"style": "width:250px;"})},
+        models.TextField: {
+            "widget": forms.Textarea(attrs={"rows": 3, "style": "width:100%; max-width:100%;"})
+        },
+        models.ForeignKey: {"widget": forms.Select(attrs={"style": "width:300px;"})},
+        models.DecimalField: {"widget": forms.NumberInput(attrs={"style": "width:100px;"})},
+    }
+
+    def formfield_for_choice_field(self, db_field, request, **kwargs):
+        formfield = super().formfield_for_choice_field(db_field, request, **kwargs)
+
+        if db_field.name == "pay_type":
+            formfield.widget.attrs.update({"style": "width:300px;"})
 
         return formfield
