@@ -28,6 +28,9 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         # Custom User module
         "auth.User": "fas fa-user",
+        # Core Setup
+        "core.AdditionalChargeType": "fas fa-receipt",
+        "core.PaymentMethod": "fas fa-credit-card",
         # Party Management
         "party_management.Customer": "fas fa-user-tie",
         "party_management.Supplier": "fas fa-truck-loading",
@@ -36,8 +39,8 @@ JAZZMIN_SETTINGS = {
         "inventory.ItemUnit": "fas fa-balance-scale",
         "inventory.ItemBrand": "fas fa-copyright",
         "inventory.ItemCategory": "fas fa-sitemap",
-        # Warehouse / Stock
         "inventory.Warehouse": "fas fa-warehouse",
+        # Purchase & Sales
         "purchase.Purchase": "fas fa-shopping-cart",
     },
     # Icons that are used when one is not manually specified

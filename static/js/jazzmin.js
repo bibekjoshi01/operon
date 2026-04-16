@@ -37,3 +37,47 @@ document.addEventListener("DOMContentLoaded", function () {
     el.classList.add("vTextField");
   });
 });
+
+// Sidebar Search Panel
+// ----------------------------------------------------------
+document.addEventListener("DOMContentLoaded", function () {
+  const userPanel = document.querySelector("#jazzy-sidebar .user-panel");
+
+  if (!userPanel) return;
+
+  // replace entire content
+  userPanel.innerHTML = `
+        <div class="sidebar-search-wrapper">
+            <input type="text" class="sidebar-search" placeholder="Search menu...">
+        </div>
+    `;
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.querySelector(".sidebar-search");
+  if (!input) return;
+
+  const items = document.querySelectorAll(
+    "#jazzy-sidebar .nav-sidebar .nav-item",
+  );
+
+  input.addEventListener("input", function () {
+    const query = this.value.toLowerCase().trim();
+
+    items.forEach((item) => {
+      const link = item.querySelector(".nav-link");
+      if (!link) return;
+
+      const text = link.innerText.toLowerCase();
+
+      if (query === "") {
+        item.style.display = "";
+        return;
+      }
+
+      const match = text.includes(query);
+
+      item.style.display = match ? "" : "none";
+    });
+  });
+});
