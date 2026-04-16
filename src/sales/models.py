@@ -73,10 +73,18 @@ class SalesItem(TimeStampedModel):
     )
 
     gross_amount = models.DecimalField(
-        max_digits=12, decimal_places=2, editable=False, validators=[MinValueValidator(0)]
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        editable=False,
+        validators=[MinValueValidator(0)],
     )
     net_amount = models.DecimalField(
-        max_digits=12, decimal_places=2, editable=False, validators=[MinValueValidator(0)]
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        editable=False,
+        validators=[MinValueValidator(0)],
     )
 
     ref_sale_item = models.ForeignKey("self", on_delete=models.PROTECT, blank=True, null=True)

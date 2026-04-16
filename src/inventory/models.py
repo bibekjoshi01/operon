@@ -95,9 +95,9 @@ class StockLedger(TimeStampedModel):
         blank=True,
         related_name="stock_entries",
     )
-    # sale = models.ForeignKey(
-    #     "sales.Sale", on_delete=models.PROTECT, null=True, blank=True, related_name="stock_entries"
-    # )
+    sale = models.ForeignKey(
+        "sales.Sales", on_delete=models.PROTECT, null=True, blank=True, related_name="stock_entries"
+    )
 
     remarks = models.TextField(blank=True)
 
@@ -108,7 +108,7 @@ class StockLedger(TimeStampedModel):
             models.Index(fields=["warehouse"]),
             models.Index(fields=["movement_type"]),
             models.Index(fields=["purchase"]),
-            # models.Index(fields=["sale"]),
+            models.Index(fields=["sale"]),
         ]
 
     def __str__(self):

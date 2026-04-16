@@ -2,8 +2,26 @@ from django import forms
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
 from django.db import models
+from django.forms.models import BaseInlineFormSet
 from django.urls import reverse
 from django.utils.html import format_html
+
+
+class CommonBaseInlineFormSet(BaseInlineFormSet):
+    def get_form_kwargs(self, index):
+        kwargs = super().get_form_kwargs(index)
+        kwargs["request_user"] = self.request_user
+        return kwargs
+
+    def save_new(self, form, commit=True):
+        obj = super().save_new(form, commit=False)
+
+        obj.created_by = self.request_user
+
+        if commit:
+            obj.save()
+
+        return obj
 
 
 class BaseAdmin(admin.ModelAdmin):
