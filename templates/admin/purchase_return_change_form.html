@@ -1,0 +1,27 @@
+{% extends "admin/change_form.html" %}
+{% block after_field_sets %}
+
+<div class="card mt-4">
+  <div class="card-header">
+    <h4>Purchase Items</h4>
+  </div>
+
+  <div class="card-body">
+    <table class="table table-bordered" id="purchase-items-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Rate</th>
+          <th>Tax %</th>
+          <th>Discount %</th>
+          <th>Gross Amount</th>
+          <th>Net Amount</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
