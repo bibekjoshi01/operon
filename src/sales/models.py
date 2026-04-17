@@ -13,7 +13,7 @@ class Sales(TimeStampedModel):
     pay_type = models.CharField(choices=PayTypes.choices(), max_length=20)
     sale_type = models.CharField(choices=SaleTypes.choices(), max_length=20)
     sale_no = models.PositiveBigIntegerField()
-    sale_no_full = models.CharField(max_length=20, unique=True)
+    sale_no_full = models.CharField(max_length=50, unique=True)
 
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="sales")
 

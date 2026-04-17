@@ -95,22 +95,10 @@ class SalesAdmin(BaseAdmin):
         ),
     )
 
-    def save_formset(self, request, form, formset, change):
-        objs = formset.save(commit=False)
-
-        for obj in objs:
-            if hasattr(obj, "created_by_id") and not obj.created_by_id:
-                obj.created_by = request.user
-
-            obj.save()
-
-        for obj in formset.deleted_objects:
-            obj.delete()
-
     def save_model(self, request, obj, form, change):
         if not change:
             obj.sale_type = SaleTypes.SALE
-            obj.sale_no, obj.sale_no_full = SaleService.generate_sale_no()
+            obj.sale_no, obj.sale_no_full = SaleService.generate_sale_no(type=SaleTypes.SALE)
             obj.sub_total = 0
             obj.grand_total = 0
 

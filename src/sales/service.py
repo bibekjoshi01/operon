@@ -1,6 +1,8 @@
 from django.db import transaction
 from django.utils import timezone
 
+from src.sales.constants import SaleTypes
+
 from .models import Sales
 
 
@@ -24,18 +26,11 @@ class SaleService:
         sale.sub_total = sub_total
         sale.grand_total = sub_total + total_charges
 
-        sale.save(
-            update_fields=[
-                "sale_no",
-                "sale_no_full",
-                "sub_total",
-                "grand_total",
-            ]
-        )
+        sale.save(update_fields=["sub_total", "grand_total"])
 
         return sale
 
-    def generate_sale_no():
+    def generate_sale_no(type: str):
         # generate invoice number
         last = (
             Sales.objects.select_for_update()
@@ -45,6 +40,8 @@ class SaleService:
         )
 
         sale_no = (last.sale_no + 1) if last else 1
-        sale_no_full = f"SL-{timezone.now().year}-{sale_no:06d}"
+        prefix = "SL" if type == SaleTypes.SALE else "SR"
+
+        sale_no_full = f"{prefix}-{timezone.now().year}-{sale_no:06d}"
 
         return sale_no, sale_no_full

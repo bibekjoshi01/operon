@@ -123,3 +123,15 @@ class BaseAdmin(admin.ModelAdmin):
             formfield.widget.attrs.update({"style": "width:300px;"})
 
         return formfield
+
+    def save_formset(self, request, form, formset, change):
+        objs = formset.save(commit=False)
+
+        for obj in objs:
+            if hasattr(obj, "created_by_id") and not obj.created_by_id:
+                obj.created_by = request.user
+
+            obj.save()
+
+        for obj in formset.deleted_objects:
+            obj.delete()

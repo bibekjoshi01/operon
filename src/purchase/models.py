@@ -10,11 +10,11 @@ from .constants import PayTypes, PurchaseTypes
 
 
 class Purchase(TimeStampedModel):
-    pay_type = models.CharField(choices=PayTypes.choices(), max_length=20)
-    purchase_type = models.CharField(choices=PurchaseTypes.choices(), max_length=20)
+    pay_type = models.CharField(choices=PayTypes.choices(), max_length=50)
+    purchase_type = models.CharField(choices=PurchaseTypes.choices(), max_length=50)
 
     purchase_no = models.PositiveBigIntegerField()
-    purchase_no_full = models.CharField(max_length=20, unique=True)
+    purchase_no_full = models.CharField(max_length=50, unique=True)
 
     supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT, related_name="purchases")
     bill_no = models.CharField(max_length=50, unique=True)
@@ -78,10 +78,18 @@ class PurchaseItem(TimeStampedModel):
     )
 
     gross_amount = models.DecimalField(
-        max_digits=12, decimal_places=2, editable=False, validators=[MinValueValidator(0)]
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        editable=False,
+        validators=[MinValueValidator(0)],
     )
     net_amount = models.DecimalField(
-        max_digits=12, decimal_places=2, editable=False, validators=[MinValueValidator(0)]
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        editable=False,
+        validators=[MinValueValidator(0)],
     )
     ref_purchase_item = models.ForeignKey("self", on_delete=models.PROTECT, blank=True, null=True)
 
