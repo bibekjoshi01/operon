@@ -210,10 +210,3 @@ class OrderInvoice(Order):
         proxy = True
         verbose_name = "Order"
         verbose_name_plural = "Orders"
-
-
-class OrderReturn(Order):
-    class Meta:
-        proxy = True
-        verbose_name = "Order Return"
-        verbose_name_plural = "Order Returns"

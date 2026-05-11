@@ -1,74 +1,130 @@
 [
   {
-    "name": "Pending",
-    "slug": "pending",
-    "description": "Order has been created and awaiting processing.",
-    "color": "#F59E0B",
-    "sequence": 1,
-    "is_default": true,
-    "is_terminal": false
+    "model": "order_management.orderstatus",
+    "pk": 1,
+    "fields": {
+      "name": "Pending",
+      "slug": "pending",
+      "color": "#F59E0B",
+      "sequence": 1,
+      "is_default": true,
+      "is_terminal": false,
+      "is_active": true,
+      "created_by": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
   },
   {
-    "name": "In Design",
-    "slug": "in-design",
-    "description": "Design work is currently in progress.",
-    "color": "#3B82F6",
-    "sequence": 2,
-    "is_default": false,
-    "is_terminal": false
+    "model": "order_management.orderstatus",
+    "pk": 2,
+    "fields": {
+      "name": "In Design",
+      "slug": "in-design",
+      "color": "#3B82F6",
+      "sequence": 2,
+      "is_default": false,
+      "is_terminal": false,
+      "is_active": true,
+      "created_by": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
   },
   {
-    "name": "Design Review",
-    "slug": "design-review",
-    "description": "Design is under internal or customer review.",
-    "color": "#8B5CF6",
-    "sequence": 3,
-    "is_default": false,
-    "is_terminal": false
+    "model": "order_management.orderstatus",
+    "pk": 3,
+    "fields": {
+      "name": "Design Review",
+      "slug": "design-review",
+      "color": "#8B5CF6",
+      "sequence": 3,
+      "is_default": false,
+      "is_terminal": false,
+      "is_active": true,
+      "created_by": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
   },
   {
-    "name": "Approved",
-    "slug": "approved",
-    "description": "Design/order has been approved for production.",
-    "color": "#10B981",
-    "sequence": 4,
-    "is_default": false,
-    "is_terminal": false
+    "model": "order_management.orderstatus",
+    "pk": 4,
+    "fields": {
+      "name": "Approved",
+      "slug": "approved",
+      "color": "#10B981",
+      "sequence": 4,
+      "is_default": false,
+      "is_terminal": false,
+      "is_active": true,
+      "created_by": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
   },
   {
-    "name": "Printing",
-    "slug": "printing",
-    "description": "Printing or manufacturing process has started.",
-    "color": "#06B6D4",
-    "sequence": 5,
-    "is_default": false,
-    "is_terminal": false
+    "model": "order_management.orderstatus",
+    "pk": 5,
+    "fields": {
+      "name": "Printing",
+      "slug": "printing",
+      "color": "#06B6D4",
+      "sequence": 5,
+      "is_default": false,
+      "is_terminal": false,
+      "is_active": true,
+      "created_by": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
   },
   {
-    "name": "Ready",
-    "slug": "ready",
-    "description": "Order is completed and ready for delivery or pickup.",
-    "color": "#84CC16",
-    "sequence": 6,
-    "is_default": false,
-    "is_terminal": false
+    "model": "order_management.orderstatus",
+    "pk": 6,
+    "fields": {
+      "name": "Ready",
+      "slug": "ready",
+      "color": "#84CC16",
+      "sequence": 6,
+      "is_default": false,
+      "is_terminal": false,
+      "is_active": true,
+      "created_by": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
   },
   {
-    "name": "Delivered",
-    "slug": "delivered",
-    "description": "Order has been successfully delivered.",
-    "color": "#22C55E",
-    "sequence": 7,
-    "is_default": false,
-    "is_terminal": true
+    "model": "order_management.orderstatus",
+    "pk": 7,
+    "fields": {
+      "name": "Delivered",
+      "slug": "delivered",
+      "color": "#22C55E",
+      "sequence": 7,
+      "is_default": false,
+      "is_terminal": true,
+      "is_active": true,
+      "created_by": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
   },
   {
-    "name": "Cancelled",
-    "slug": "cancelled",
-    "description": "Order has been cancelled.",
-    "color": "#EF4444",
-    "sequence": 8,
-    "is_default": false,
-    "is_terminal": true
+    "model": "order_management.orderstatus",
+    "pk": 8,
+    "fields": {
+      "name": "Cancelled",
+      "slug": "cancelled",
+      "color": "#EF4444",
+      "sequence": 8,
+      "is_default": false,
+      "is_terminal": true,
+      "is_active": true,
+      "created_by": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
   }
 ]

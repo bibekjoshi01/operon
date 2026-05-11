@@ -1,0 +1,79 @@
+[
+  {
+    "model": "order_management.paymentmethod",
+    "pk": 1,
+    "fields": {
+      "name": "Cash",
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z",
+      "created_by": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "order_management.paymentmethod",
+    "pk": 2,
+    "fields": {
+      "name": "Bank Transfer",
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z",
+      "created_by": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "order_management.paymentmethod",
+    "pk": 3,
+    "fields": {
+      "name": "eSewa",
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z",
+      "created_by": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "order_management.paymentmethod",
+    "pk": 4,
+    "fields": {
+      "name": "Khalti",
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z",
+      "created_by": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "order_management.paymentmethod",
+    "pk": 5,
+    "fields": {
+      "name": "IME Pay",
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z",
+      "created_by": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "order_management.paymentmethod",
+    "pk": 6,
+    "fields": {
+      "name": "Card (POS)",
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z",
+      "created_by": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "order_management.paymentmethod",
+    "pk": 7,
+    "fields": {
+      "name": "Fone Pay",
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z",
+      "created_by": 1,
+      "is_active": true
+    }
+  }
+]
