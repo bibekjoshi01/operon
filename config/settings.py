@@ -23,6 +23,7 @@ SHARED_APPS = (
 )
 
 TENANT_APPS = (
+    "django.contrib.humanize",
     "django.contrib.contenttypes",
     "django.contrib.messages",
     "django.contrib.staticfiles",

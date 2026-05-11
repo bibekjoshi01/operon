@@ -49,6 +49,7 @@ JAZZMIN_SETTINGS = {
     "custom_css": "css/jazzmin.css",
     "custom_js": "js/jazzmin.js",
     "use_google_fonts_cdn": True,
+    "show_breadcrumbs": True,
     "show_ui_builder": False,
     "changeform_format": "horizontal_tabs",
     "changeform_format_overrides": {},

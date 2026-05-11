@@ -106,7 +106,7 @@ class Order(TimeStampedModel):
 class OrderItem(TimeStampedModel):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
 
-    item = models.ForeignKey(Item, on_delete=models.PROTECT)
+    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="item_orders")
     quantity = models.DecimalField(
         max_digits=12, decimal_places=2, default=1, validators=[MinValueValidator(1)]
     )
@@ -173,7 +173,9 @@ class PaymentMethod(TimeStampedModel):
 
 
 class OrderPaymentDetail(TimeStampedModel):
-    payment_mode = models.ForeignKey(PaymentMethod, on_delete=models.PROTECT)
+    payment_mode = models.ForeignKey(
+        PaymentMethod, on_delete=models.PROTECT, related_name="payment_mode_payment_details"
+    )
     order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name="payment_details")
     amount = models.DecimalField(
         max_digits=12, decimal_places=2, default=0, validators=[MinValueValidator(0)]

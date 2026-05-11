@@ -1,0 +1,298 @@
+{% extends "admin/base_site.html" %} {% load humanize %} {% block extrastyle %}
+<style>
+  .dashboard-wrapper {
+    padding: 20px 0;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .summary-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    border-left: 5px solid #3b82f6;
+  }
+
+  .summary-card.green {
+    border-left-color: #10b981;
+  }
+
+  .summary-card.red {
+    border-left-color: #ef4444;
+  }
+
+  .summary-title {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .summary-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .customer-meta {
+    color: #6b7280;
+    margin-top: 6px;
+    font-size: 14px;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #111827;
+    color: white !important;
+    padding: 10px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .history-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  }
+
+  .history-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: #111827;
+  }
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .custom-table thead th {
+    background: #f9fafb;
+    padding: 14px;
+    text-align: left;
+    font-size: 13px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .custom-table tbody td {
+    padding: 16px 14px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .amount {
+    font-weight: 700;
+    color: #10b981;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 0;
+    color: #6b7280;
+  }
+
+  .content.border-bottom.mb-2 {
+    padding-left: 0 !important;
+  }
+</style>
+{% endblock %} {% block breadcrumbs %}
+<div class="row align-items-center justify-content-between w-100 ps-0">
+  <!-- LEFT SIDE -->
+  <div class="col d-flex align-items-center">
+    <h1 class="h4 m-0 pr-3 mr-3 border-right">Customers</h1>
+
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item">
+        <a href="{% url 'admin:index' %}">Home</a>
+      </li>
+
+      <li class="breadcrumb-item">
+        <a href="{% url 'admin:app_list' app_label='order_management' %}">
+          Order Management
+        </a>
+      </li>
+
+      <li class="breadcrumb-item">
+        <a href="{% url 'admin:order_management_customer_changelist' %}">
+          Customers
+        </a>
+      </li>
+
+      <li class="breadcrumb-item active">Order History</li>
+    </ol>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="col-auto">
+    <a
+      href="{% url 'admin:order_management_customer_changelist' %}"
+      class="btn btn-primary"
+      style="background: #111827; border: none"
+    >
+      <i class="fa fa-arrow-left"></i> Back
+    </a>
+  </div>
+</div>
+{% endblock %} {% block content %}
+
+<div
+  class="container-fluid"
+  style="width: 100%; max-width: 100%; padding: 0 20px"
+>
+  <div class="dashboard-wrapper">
+    <div class="page-header">
+      <div>
+        <h1 style="margin: 0">{{ customer.full_name }}</h1>
+
+        <div class="customer-meta">
+          {{ customer.phone_no|default:"No Phone" }} {% if customer.email %} •
+          {{ customer.email }} {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-title">Total Orders</div>
+        <div class="summary-value">{{ total_orders|default:0 }}</div>
+      </div>
+
+      <div class="summary-card green">
+        <div class="summary-title">Total Spent</div>
+        <div class="summary-value">
+          {{ total_spent|default_if_none:0|floatformat:2|intcomma }}
+        </div>
+      </div>
+
+      <div class="summary-card red">
+        <div class="summary-title">Balance Due</div>
+        <div class="summary-value">
+          {{ balance_due|default_if_none:0|floatformat:2|intcomma }}
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDER HISTORY -->
+    <div class="history-card">
+      <div class="history-title">Order History</div>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Order No</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Deadline</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>
+              <strong>{{ order.order_no_full }}</strong>
+              <br />
+              <small style="color: #6b7280">
+                {{ order.bill_no|default:"No Bill" }}
+              </small>
+            </td>
+
+            <td>
+              <span
+                class="status-badge"
+                style="background: {{ order.status.color }};"
+              >
+                {{ order.status.name }}
+              </span>
+            </td>
+
+            <td>
+              <span class="amount">
+                {{ order.grand_total|floatformat:2|intcomma }}
+              </span>
+            </td>
+
+            <td>
+              {% if order.deadline_date %} {{ order.deadline_date }} {% else %}
+              - {% endif %}
+            </td>
+
+            <td>
+              {{ order.created_at|date:"M d, Y" }}
+              <br />
+              <small style="color: #6b7280">
+                {{ order.created_at|time:"h:i A" }}
+              </small>
+            </td>
+            <td>
+              <a
+                href="{% url 'admin:order_management_orderinvoice_change' order.id %}"
+                class="btn btn-sm btn-primary"
+                title="View Order"
+              >
+                <i class="fas fa-eye"></i> View
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+
+          <tr>
+            <td colspan="5">
+              <div class="empty-state">No orders found for this customer.</div>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block extrajs %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const el = document.querySelector("a[href*='customer']");
+    if (el) {
+      el.classList.add("active");
+    }
+  });
+</script>
+{% endblock %}
