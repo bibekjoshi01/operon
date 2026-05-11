@@ -35,7 +35,12 @@ class ExpenseCategoryAdmin(BaseAdmin):
     fieldsets = (
         (
             "Basic Info",
-            {"fields": (("name", "is_active"), ("description",))},
+            {
+                "fields": (
+                    ("name", "is_active"),
+                    "description",
+                )
+            },
         ),
     )
 
@@ -56,7 +61,7 @@ class ExpenseAdmin(BaseAdmin):
 
     list_display = (
         "serial_number",
-        "title",
+        "title_truncated",
         "category",
         "amount_display",
         "expense_date",
@@ -82,6 +87,19 @@ class ExpenseAdmin(BaseAdmin):
         ),
     )
 
+    def title_truncated(self, obj):
+        if not obj.title:
+            return "-"
+
+        title = obj.title
+
+        if len(title) > 50:
+            title = title[:50] + "..."
+
+        return format_html("<span title='{}'>{}</span>", obj.title, title)
+
+    title_truncated.short_description = "Title"
+
     def formfield_for_dbfield(self, db_field, **kwargs):
         formfield = super().formfield_for_dbfield(db_field, **kwargs)
 
@@ -97,7 +115,7 @@ class ExpenseAdmin(BaseAdmin):
 
     def amount_display(self, obj):
         return format_html(
-            "<strong style='color:#EF4444;'>₹ {}</strong>",
+            "<strong style='color:#EF4444;'>{}</strong>",
             obj.amount,
         )
 

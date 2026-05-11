@@ -1,0 +1,369 @@
+{% extends "admin/index.html" %} {% load humanize %} {% block extrastyle %}
+<style>
+  /* ===== Dashboard Wrapper ===== */
+  .dashboard-wrapper {
+    margin-bottom: 20px;
+  }
+
+  /* ===== KPI Cards ===== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .summary-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: 0.2s ease;
+    border-left: 5px solid #3b82f6;
+  }
+
+  /* TOP STYLE */
+  .summary-card.top {
+    border-left: none;
+    border-top: 5px solid #3b82f6;
+  }
+
+  /* COLORS MUST APPLY TO TOP BORDER */
+  .summary-card.top.green {
+    border-top-color: #10b981;
+  }
+
+  .summary-card.top.red {
+    border-top-color: #ef4444;
+  }
+
+  .summary-card.top.yellow {
+    border-top-color: #f59e0b;
+  }
+
+  .summary-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .summary-title {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .summary-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .green {
+    border-left-color: #10b981 !important;
+  }
+  .red {
+    border-left-color: #ef4444 !important;
+  }
+  .yellow {
+    border-left-color: #f59e0b !important;
+  }
+
+  /* ===== Layout Grid ===== */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 992px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Cards ===== */
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #111827;
+  }
+
+  /* ===== Status List ===== */
+  .status-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #374151;
+  }
+
+  /* ===== Financial Grid ===== */
+  .finance-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .finance-box h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .profit {
+    color: #10b981;
+    font-size: 22px;
+  }
+
+  .dashboard-filter {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  /* Base button */
+  .filter-btn {
+    padding: 6px 12px;
+    border-radius: 10px; /* 10–12px as requested */
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    color: #495057;
+    background: #f8f9fa;
+
+    border: 1px solid #dee2e6;
+
+    transition: all 0.15s ease-in-out;
+  }
+
+  /* Hover (subtle bootstrap-like) */
+  .filter-btn:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+  }
+
+  /* Active state (Bootstrap primary-ish, not black) */
+  .filter-btn.active {
+    background: #0d6efd; /* Bootstrap primary */
+    color: #ffffff !important;
+    border-color: #0d6efd;
+  }
+
+  .filter-btn:active {
+    transform: scale(0.97);
+  }
+</style>
+{% endblock %} {% block breadcrumbs %}
+<div class="d-flex justify-content-end align-items-center w-100">
+<div class="dashboard-filter">
+  <a
+    href="?range=all"
+    class="filter-btn {% if selected_range == 'all' or not selected_range %}active{% endif %}"
+  >
+    All
+  </a>
+
+  <a
+    href="?range=today"
+    class="filter-btn {% if selected_range == 'today' %}active{% endif %}"
+  >
+    Today
+  </a>
+
+  <a
+    href="?range=month"
+    class="filter-btn {% if selected_range == 'month' %}active{% endif %}"
+  >
+    This Month
+  </a>
+
+  <a
+    href="?range=year"
+    class="filter-btn {% if selected_range == 'year' %}active{% endif %}"
+  >
+    This Year
+  </a>
+</div>
+</div>
+{% endblock %} {% block content %}
+
+<div class="container-fluid" style="max-width: 100%; padding: 0px">
+  <!-- ================= KPI CARDS ================= -->
+  <div class="dashboard-wrapper">
+    <div class="kpi-grid">
+      <div class="summary-card">
+        <div class="summary-title">Active Orders</div>
+        <div class="summary-value">{{ active_orders }}</div>
+      </div>
+
+      <div class="summary-card yellow">
+        <div class="summary-title">Completed Today</div>
+        <div class="summary-value">{{ completed_today }}</div>
+      </div>
+
+      <div class="summary-card red">
+        <div class="summary-title">Total Customers</div>
+        <div class="summary-value">{{ customer_count|intcomma }}</div>
+      </div>
+
+      <div class="summary-card green">
+        <div class="summary-title">Total Orders</div>
+        <div class="summary-value">{{ total_orders|intcomma }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN GRID ================= -->
+  <div class="dashboard-grid">
+    <!-- LEFT: STATUS + CHART -->
+    <div class="card">
+      <div class="section-title">Orders by Status</div>
+
+      <div
+        style="display: flex; align-items: stretch; gap: 20px; height: 260px"
+      >
+        <!-- LEFT: CHART -->
+        <div
+          style="
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <canvas id="statusChart"></canvas>
+        </div>
+
+        <!-- RIGHT: LEGENDS -->
+        <div
+          style="
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          "
+        >
+          {% for s in status_data %}
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 6px 0;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span
+                style="
+              width:10px;
+              height:10px;
+              border-radius:50%;
+              background:{{ s.color }};
+              display:inline-block;"
+              >
+              </span>
+              <span style="font-size: 13px; color: #374151">
+                {{ s.name }}
+              </span>
+            </div>
+
+            <strong style="font-size: 13px"> {{ s.count }} </strong>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: FINANCIAL -->
+    <div class="card">
+      <div class="section-title">Financial Summary</div>
+
+      <div class="finance-grid">
+        <div class="summary-card top">
+          <div class="summary-title">Total Revenue</div>
+          <div class="summary-value">{{ revenue|intcomma }}</div>
+        </div>
+
+        <div class="summary-card top green">
+          <div class="summary-title">Amount Received</div>
+          <div class="summary-value">{{ paid|intcomma }}</div>
+        </div>
+
+        <div class="summary-card top red">
+          <div class="summary-title">Pending Balance</div>
+          <div class="summary-value">{{ pending_payments|intcomma }}</div>
+        </div>
+
+        <div class="summary-card top yellow">
+          <div class="summary-title">Total Expenses</div>
+          <div class="summary-value">{{ expenses|intcomma }}</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px; text-align: center">
+        <div class="summary-title">Net Profit</div>
+        <div class="summary-value profit">{{ net_profit|intcomma }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CHART ================= -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('statusChart');
+
+  new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels: [
+              {% for s in status_data %}
+                  "{{ s.name }}",
+              {% endfor %}
+          ],
+          datasets: [{
+              data: [
+                  {% for s in status_data %}
+                      {{ s.count }},
+                  {% endfor %}
+              ],
+              backgroundColor: [
+                  {% for s in status_data %}
+                      "{{ s.color }}",
+                  {% endfor %}
+              ],
+              borderWidth: 0,
+              hoverOffset: 6
+          }]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+
+          cutout: '60%',   // thicker pie = visually bigger
+
+          plugins: {
+              legend: {
+                  display: false   // IMPORTANT (we are custom rendering legends)
+              }
+          }
+      }
+  });
+</script>
+
+{{ block.super }} {% endblock %}

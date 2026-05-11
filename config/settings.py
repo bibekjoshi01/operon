@@ -32,6 +32,7 @@ TENANT_APPS = (
     "django.contrib.admin",
     "src.order_management",
     "src.expense_management",
+    "src.dashboard",
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
