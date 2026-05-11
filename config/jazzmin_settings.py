@@ -22,7 +22,7 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,
     "hide_apps": [],
     "hide_models": [],
-    "order_with_respect_to": ["order_management", "user"],
+    "order_with_respect_to": ["order_management", "expense_management", "user"],
     "custom_links": {},
     # for the full list of 5.13.0 free icon classes
     "icons": {
@@ -34,6 +34,9 @@ JAZZMIN_SETTINGS = {
         "order_management.Customer": "fas fa-user-tie",
         "order_management.Item": "fas fa-box",
         "order_management.OrderInvoice": "fas fa-cash-register",
+        # Expense Management
+        "expense_management.Expense": "fas fa-receipt",
+        "expense_management.ExpenseCategory": "fas fa-folder-open",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
