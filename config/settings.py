@@ -12,7 +12,7 @@ APPS_DIR = BASE_DIR / "src"
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
 DEBUG = os.getenv("DEBUG", "True") == "True"
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 SHARED_APPS = (
     "jazzmin",
@@ -46,6 +46,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "src.libs.middleware.TenantStatusMiddleware",
 ]
 
 ROOT_URLCONF = "config.tenant_urls"

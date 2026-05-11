@@ -17,13 +17,20 @@ JAZZMIN_SETTINGS = {
     "user_avatar": None,
     # Links to put along the top menu
     "topmenu_links": [],
-    "usermenu_links": [],
     "show_sidebar": True,
     "navigation_expanded": True,
     "hide_apps": [],
     "hide_models": [],
     "order_with_respect_to": ["order_management", "expense_management", "user"],
     "custom_links": {},
+    "usermenu_links": [
+        {
+            "name": "Support",
+            "url": "https://kayobadger.com.np/contact-us",
+            "new_window": True,
+            "icon": "fas fa-life-ring",
+        },
+    ],
     # for the full list of 5.13.0 free icon classes
     "icons": {
         "auth.Group": "fas fa-users",
