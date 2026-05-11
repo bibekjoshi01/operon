@@ -25,7 +25,7 @@ class CommonBaseInlineFormSet(BaseInlineFormSet):
 
 
 class BaseAdmin(admin.ModelAdmin):
-    list_per_page = 20
+    list_per_page = 10
     ordering = ("-created_at",)
     readonly_fields = ("created_at", "updated_at", "created_by")
     list_display_links = None

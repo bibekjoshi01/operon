@@ -9,6 +9,7 @@ JAZZMIN_SETTINGS = {
     "login_logo": "images/logo.png",
     "login_logo_dark": None,
     "site_logo_classes": "img-circle",
+    "theme": "flatly",
     "site_icon": None,
     "welcome_sign": "Welcome to the Operon",
     "copyright": "OPERON Pvt. Ltd.",
@@ -21,14 +22,7 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,
     "hide_apps": [],
     "hide_models": [],
-    "order_with_respect_to": [
-        "party_management",
-        "sales",
-        "purchase",
-        "inventory",
-        "user",
-        "core",
-    ],
+    "order_with_respect_to": ["order_management", "user"],
     "custom_links": {},
     # for the full list of 5.13.0 free icon classes
     "icons": {
@@ -37,21 +31,15 @@ JAZZMIN_SETTINGS = {
         "auth.User": "fas fa-user",
         # Core Setup
         "core.AdditionalChargeType": "fas fa-receipt",
-        "core.PaymentMethod": "fas fa-credit-card",
-        # Party Management
-        "party_management.Customer": "fas fa-user-tie",
-        "party_management.Supplier": "fas fa-truck-loading",
-        # Items
-        "inventory.Item": "fas fa-box",
-        "inventory.ItemUnit": "fas fa-balance-scale",
-        "inventory.ItemBrand": "fas fa-copyright",
-        "inventory.ItemCategory": "fas fa-sitemap",
-        "inventory.Warehouse": "fas fa-warehouse",
-        # Purchase & Sales
-        "purchase.PurchaseInvoice": "fas fa-file-invoice-dollar",
-        "purchase.PurchaseReturn": "fas fa-undo-alt",
-        "sales.SalesInvoice": "fas fa-cash-register",
-        "sales.SalesReturn": "fas fa-undo",
+        # Order Management
+        "order_management.PaymentMethod": "fas fa-credit-card",
+        "order_management.Customer": "fas fa-user-tie",
+        "order_management.Item": "fas fa-box",
+        "order_management.OrderInvoice": "fas fa-cash-register",
+        "order_management.OrderReturn": "fas fa-undo",
+        # Sales
+        "order.PurchaseInvoice": "fas fa-file-invoice-dollar",
+        "order.PurchaseReturn": "fas fa-undo-alt",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
@@ -63,9 +51,6 @@ JAZZMIN_SETTINGS = {
     "use_google_fonts_cdn": True,
     "show_ui_builder": False,
     "changeform_format": "horizontal_tabs",
-    "changeform_format_overrides": {
-        "auth.user": "collapsible",
-        "auth.group": "vertical_tabs",
-    },
+    "changeform_format_overrides": {},
     "language_chooser": False,
 }

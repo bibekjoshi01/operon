@@ -1,12 +1,12 @@
 from django.db import transaction
 from django.utils import timezone
 
-from src.purchase.constants import PurchaseTypes
+from src.order_management.constants import OrderTypes
 
-from .models import Purchase, PurchaseItem
+from .models import Order, OrderItem
 
 
-class PurchaseService:
+class OrderService:
     @staticmethod
     @transaction.atomic
     def finalize_purchase(purchase):
@@ -33,29 +33,27 @@ class PurchaseService:
     def generate_purchase_no(type: str):
         # generate invoice number
         last = (
-            Purchase.objects.select_for_update()
+            Order.objects.select_for_update()
             .exclude(purchase_no__isnull=True)
             .order_by("-purchase_no")
             .first()
         )
 
         purchase_no = (last.purchase_no + 1) if last else 1
-        prefix = "PU" if type == PurchaseTypes.PURCHASE else "PR"
+        prefix = "PU" if type == OrderTypes.PURCHASE else "PR"
         purchase_no_full = f"{prefix}-{timezone.now().year}-{purchase_no:06d}"
 
         return purchase_no, purchase_no_full
 
 
-class PurchaseReturnService:
+class OrderReturnService:
     @staticmethod
     def create_return(ref_purchase_id, supplier_id, notes, user):
-        purchase = Purchase.objects.prefetch_related("items").get(id=ref_purchase_id)
-        purchase_no, purchase_no_full = PurchaseService.generate_purchase_no(
-            type=PurchaseTypes.RETURN
-        )
+        purchase = Order.objects.prefetch_related("items").get(id=ref_purchase_id)
+        purchase_no, purchase_no_full = OrderService.generate_purchase_no(type=OrderTypes.RETURN)
 
-        return_obj = Purchase.objects.create(
-            purchase_type=PurchaseTypes.RETURN,
+        return_obj = Order.objects.create(
+            purchase_type=OrderTypes.RETURN,
             supplier_id=supplier_id,
             ref_purchase_id=ref_purchase_id,
             purchase_no=purchase_no,
@@ -71,7 +69,7 @@ class PurchaseReturnService:
         )
 
         for item in purchase.items.all():
-            PurchaseItem.objects.create(
+            OrderItem.objects.create(
                 purchase=return_obj,
                 item=item.item,
                 quantity=item.quantity,

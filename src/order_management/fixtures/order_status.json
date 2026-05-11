@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Pending",
+    "slug": "pending",
+    "description": "Order has been created and awaiting processing.",
+    "color": "#F59E0B",
+    "sequence": 1,
+    "is_default": true,
+    "is_terminal": false
+  },
+  {
+    "name": "In Design",
+    "slug": "in-design",
+    "description": "Design work is currently in progress.",
+    "color": "#3B82F6",
+    "sequence": 2,
+    "is_default": false,
+    "is_terminal": false
+  },
+  {
+    "name": "Design Review",
+    "slug": "design-review",
+    "description": "Design is under internal or customer review.",
+    "color": "#8B5CF6",
+    "sequence": 3,
+    "is_default": false,
+    "is_terminal": false
+  },
+  {
+    "name": "Approved",
+    "slug": "approved",
+    "description": "Design/order has been approved for production.",
+    "color": "#10B981",
+    "sequence": 4,
+    "is_default": false,
+    "is_terminal": false
+  },
+  {
+    "name": "Printing",
+    "slug": "printing",
+    "description": "Printing or manufacturing process has started.",
+    "color": "#06B6D4",
+    "sequence": 5,
+    "is_default": false,
+    "is_terminal": false
+  },
+  {
+    "name": "Ready",
+    "slug": "ready",
+    "description": "Order is completed and ready for delivery or pickup.",
+    "color": "#84CC16",
+    "sequence": 6,
+    "is_default": false,
+    "is_terminal": false
+  },
+  {
+    "name": "Delivered",
+    "slug": "delivered",
+    "description": "Order has been successfully delivered.",
+    "color": "#22C55E",
+    "sequence": 7,
+    "is_default": false,
+    "is_terminal": true
+  },
+  {
+    "name": "Cancelled",
+    "slug": "cancelled",
+    "description": "Order has been cancelled.",
+    "color": "#EF4444",
+    "sequence": 8,
+    "is_default": false,
+    "is_terminal": true
+  }
+]

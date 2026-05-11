@@ -1,9 +1,8 @@
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 
 print("TENANT URLS LOADED")
 
 urlpatterns = [
-    path("purchase/", include("src.purchase.urls")),
     path("", admin.site.urls),
 ]
