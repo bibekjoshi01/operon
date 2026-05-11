@@ -1,6 +1,7 @@
 from django.db import models
 
 from src.base.models import TimeStampedModel
+from src.libs.storage import tenant_media_path
 
 
 class ExpenseCategory(TimeStampedModel):
@@ -35,7 +36,7 @@ class Expense(TimeStampedModel):
 class ExpenseAttachment(TimeStampedModel):
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, related_name="attachments")
 
-    file = models.FileField(upload_to="expenses/")
+    file = models.FileField(upload_to=tenant_media_path)
     name = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
