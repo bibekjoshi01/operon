@@ -361,13 +361,13 @@ class OrderAdmin(BaseAdmin):
         "is_urgent",
         "deadline_status",
         "created_date",
-        "edit_action",
+        "actions_column",
     )
 
     def created_date(self, obj):
         return format_html("<span>{}</span>", obj.created_at.date())
 
-    list_filter = ("customer", "created_at", ItemFilter)
+    list_filter = ("customer", "status", "created_at", ItemFilter)
     search_fields = ("customer", "order_no_full", "bill_no")
 
     def bill_info(self, obj):
@@ -493,7 +493,7 @@ class OrderAdmin(BaseAdmin):
         status_color = "#10B981" if status == "PAID" else "#EF4444"
 
         return format_html(
-            "<strong style='color:#10B981;'{}</strong><br>"
+            "<strong style='color:#10B981;'>{}</strong><br>"
             "<span style='color:{};font-size:12px;font-weight:600;'>{}</span>",
             total_paid,
             status_color,
@@ -501,3 +501,81 @@ class OrderAdmin(BaseAdmin):
         )
 
     paid_amount.short_description = "Paid Amount"
+
+    def actions_column(self, obj):
+        edit_url = reverse(
+            f"admin:{obj._meta.app_label}_{obj._meta.model_name}_change",
+            args=[obj.pk],
+        )
+
+        orders_url = reverse(
+            "admin:order_management_order_details",
+            args=[obj.pk],
+        )
+
+        return format_html(
+            """
+            <div style="display:flex;gap:20px;align-items:center;">
+                <a href="{}" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </a>
+
+                <a href="{}"
+                title="Order History"
+                class="open-order-history">
+                    <i class="fas fa-eye"></i>
+                </a>
+            </div>
+            """,
+            edit_url,
+            orders_url,
+        )
+
+    actions_column.short_description = "Actions"
+
+    def get_urls(self):
+        urls = super().get_urls()
+
+        custom_urls = [
+            path(
+                "<int:order_id>/details/",
+                self.admin_site.admin_view(self.order_detail_view),
+                name="order_management_order_details",
+            ),
+        ]
+
+        return custom_urls + urls
+
+    def order_detail_view(self, request, order_id):
+        order = (
+            OrderInvoice.objects.select_related("customer", "status")
+            .prefetch_related(
+                "items",
+                "payment_details",
+                "additional_charges",
+            )
+            .get(pk=order_id)
+        )
+
+        payments = order.payment_details.all()
+        items = order.items.all()
+        charges = order.additional_charges.all()
+
+        total_paid = payments.aggregate(total=Sum("amount"))["total"] or 0
+
+        context = {
+            **self.admin_site.each_context(request),
+            "opts": self.model._meta,
+            "order": order,
+            "items": items,
+            "payments": payments,
+            "charges": charges,
+            "total_paid": total_paid,
+            "balance_due": (order.grand_total or 0) - total_paid,
+        }
+
+        return TemplateResponse(
+            request,
+            "admin/order_detail_view.html",
+            context,
+        )

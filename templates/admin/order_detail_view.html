@@ -1,0 +1,481 @@
+{% extends "admin/base_site.html" %} {% load humanize %} {% block extrastyle %}
+<style>
+  .detail-wrapper {
+    padding: 20px 0;
+  }
+
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    margin-bottom: 16px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th {
+    text-align: left;
+    padding: 12px;
+    background: #f9fafb;
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .row-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .content.border-bottom.mb-2 {
+    padding-left: 0 !important;
+  }
+</style>
+{% endblock %} {% block breadcrumbs %}
+<div class="row align-items-center justify-content-between w-100 ps-0">
+  <!-- LEFT SIDE -->
+  <div class="col d-flex align-items-center">
+    <h1 class="h4 m-0 pr-3 mr-3 border-right">Orders</h1>
+
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item">
+        <a href="{% url 'admin:index' %}">Home</a>
+      </li>
+
+      <li class="breadcrumb-item">
+        <a href="{% url 'admin:app_list' app_label='order_management' %}">
+          Order Management
+        </a>
+      </li>
+
+      <li class="breadcrumb-item">
+        <a href="{% url 'admin:order_management_orderinvoice_changelist' %}">
+          Orders
+        </a>
+      </li>
+
+      <li class="breadcrumb-item active">Order Detail</li>
+    </ol>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="col-auto">
+    <a
+      href="{% url 'admin:order_management_orderinvoice_changelist' %}"
+      class="btn btn-primary"
+      style="background: #111827; border: none"
+    >
+      <i class="fa fa-arrow-left"></i> Back
+    </a>
+  </div>
+</div>
+{% endblock %} {% block content %}
+
+<div
+  class="container-fluid"
+  style="width: 100%; max-width: 100%; padding: 0 20px"
+>
+  <div class="detail-wrapper">
+    <!-- HEADER -->
+    <div
+      class="card"
+      style="
+        padding: 18px 20px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <!-- LEFT SIDE: Order No -->
+      <div>
+        <h2 style="margin: 0; font-size: 20px; font-weight: 700">
+          Order #{{ order.order_no_full }}
+        </h2>
+      </div>
+
+      <!-- RIGHT SIDE: Meta Info -->
+      <div
+        style="
+          margin-top: 15px;
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        "
+      >
+        <!-- Status -->
+        <span
+          class="badge"
+          style="background: {{ order.status.color }};
+          color: white;
+          padding: 6px 10px;
+          font-size: 12px;
+          font-weight: 600;
+          border-radius: 999px;"
+        >
+          {{ order.status.name }}
+        </span>
+
+        <!-- Urgent -->
+        {% if order.is_urgent %}
+        <span
+          style="
+            background: #ef4444;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+          "
+        >
+          Urgent
+        </span>
+        {% endif %}
+
+        <!-- Deadline -->
+        {% if order.deadline_date %}
+        <span
+          style="
+            background: #f3f4f6;
+            color: #111827;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+          "
+        >
+          Due: {{ order.deadline_date }}
+        </span>
+        {% endif %}
+
+        <!-- Order Date -->
+        {% if order.created_at %}
+        <span
+          style="
+            background: #f3f4f6;
+            color: #111827;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+          "
+        >
+          Order Date: {{ order.created_at }}
+        </span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="grid">
+      <div
+        class="card"
+        style="position: relative; padding: 16px; border-radius: 12px"
+      >
+        <a
+          href="{% url 'admin:order_management_customer_order_history' order.customer.id %}"
+          title="Open Customer"
+          style="position: absolute; top: 12px; right: 12px; color: #6b7280"
+        >
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+
+        <div class="section-title">Customer</div>
+        <strong>{{ order.customer.full_name }}</strong><br />
+        <small
+          >{{ order.customer.phone_no }} / {{ order.customer.email }}</small
+        >
+      </div>
+
+      <div
+        class="card"
+        style="position: relative; padding: 16px; border-radius: 12px"
+      >
+        <a
+          href="{% url 'admin:order_management_orderinvoice_change' order.id %}#basic-info-tab"
+          title="Open Order Basic Info"
+          style="position: absolute; top: 12px; right: 12px; color: #6b7280"
+        >
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+
+        <div class="section-title">Bill Info</div>
+        <strong>{{ order.bill_no }}</strong><br />
+        <small>{{ order.bill_date }}</small>
+      </div>
+
+      <div
+        class="card"
+        style="position: relative; padding: 16px; border-radius: 12px"
+      >
+        <a
+          href="{% url 'admin:order_management_orderinvoice_change' order.id %}#payment-details-tab"
+          title="Open Payments"
+          style="position: absolute; top: 12px; right: 12px; color: #6b7280"
+        >
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+
+        <div class="section-title">Paid Amount</div>
+        <h3 style="color: #10b981">
+          {{ total_paid|default:0|floatformat:2|intcomma }}
+        </h3>
+      </div>
+
+      <div
+        class="card"
+        style="position: relative; padding: 16px; border-radius: 12px"
+      >
+        <a
+          href="{% url 'admin:order_management_orderinvoice_change' order.id %}#payment-details-tab"
+          title="Open Payments"
+          style="position: absolute; top: 12px; right: 12px; color: #6b7280"
+        >
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+
+        <div class="section-title">Due Amount</div>
+        <h3
+          style="color:{% if balance_due > 0 %}#EF4444{% else %}#10B981{% endif %};"
+        >
+          {{ balance_due|default:0|floatformat:2|intcomma }}
+        </h3>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Discount Amount</div>
+        <h3>{{ order.discount_amount|floatformat:2|intcomma }}</h3>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Tax Amount</div>
+        <h3>{{ order.tax_amount|floatformat:2|intcomma }}</h3>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Sub Total</div>
+        <h3>{{ order.sub_total|floatformat:2|intcomma }}</h3>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Grand Total</div>
+        <h3>{{ order.grand_total|floatformat:2|intcomma }}</h3>
+      </div>
+    </div>
+
+    <!-- ITEMS -->
+    <div class="card" style="position: relative">
+      <!-- TOP RIGHT LINK -->
+      <a
+        href="{% url 'admin:order_management_orderinvoice_change' order.id %}#order-items-tab"
+        title="Open Order Items in Admin"
+        style="position: absolute; top: 12px; right: 12px; color: #6b7280"
+      >
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+
+      <!-- TITLE -->
+      <div class="section-title">Order Items</div>
+
+      <!-- TABLE -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Tax</th>
+            <th>Discount</th>
+            <th>Gross</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for i in items %}
+          <tr>
+            <td>{{ i.item.name }}</td>
+            <td>{{ i.quantity }}</td>
+            <td>{{ i.rate }}</td>
+            <td>{{ i.tax_amount }}</td>
+            <td>{{ i.discount_amount }}</td>
+            <td>{{ i.gross_amount }}</td>
+            <td>{{ i.net_amount }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7">No items</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAYMENTS -->
+    <div class="card" style="position: relative">
+      <!-- TOP RIGHT LINK -->
+      <a
+        href="{% url 'admin:order_management_orderinvoice_change' order.id %}#payment-details-tab"
+        title="Open Payments in Admin"
+        style="position: absolute; top: 12px; right: 12px; color: #6b7280"
+      >
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+
+      <!-- TITLE -->
+      <div class="section-title">Payments</div>
+
+      <!-- TABLE -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Amount</th>
+            <th>Remarks</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for p in payments %}
+          <tr>
+            <td>{{ p.payment_mode.name }}</td>
+            <td>{{ p.amount }}</td>
+            <td>{{ p.remarks }}</td>
+            <td>{{ p.created_at|date:"M d, Y" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">No payments</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ADDITIONAL CHARGES -->
+    <div class="card" style="position: relative">
+      <!-- TOP RIGHT LINK -->
+      <a
+        href="{% url 'admin:order_management_orderinvoice_change' order.id %}#additional-charges-tab"
+        title="Open Payments in Admin"
+        style="position: absolute; top: 12px; right: 12px; color: #6b7280"
+      >
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+
+      <div class="section-title">Additional Charges</div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Amount</th>
+            <th>Remarks</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for c in charges %}
+          <tr>
+            <td>{{ c.amount }}</td>
+            <td>{{ c.remarks }}</td>
+            <td>{{ c.created_at|date:"M d, Y" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="2">No charges</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      style="
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      "
+    >
+      <!-- DESCRIPTION -->
+      <div class="card" style="padding: 16px; border-radius: 12px">
+        <div
+          class="section-title"
+          style="
+            margin-bottom: 8px;
+            color: #6b7280;
+            font-size: 16px;
+            font-weight: 600;
+          "
+        >
+          Description
+        </div>
+
+        <div style="color: #111827; font-size: 14px">
+          {{ order.description|default:"No description provided" }}
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="card" style="padding: 16px; border-radius: 12px">
+        <div
+          class="section-title"
+          style="
+            margin-bottom: 8px;
+            color: #6b7280;
+            font-size: 16px;
+            font-weight: 600;
+          "
+        >
+          Notes
+        </div>
+
+        <div style="color: #111827; font-size: 14px">
+          {{ order.notes|default:"No notes available" }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %} {% block extrajs %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const el = document.querySelector("a[href*='orders']");
+      if (el) {
+        el.classList.add("active");
+      }
+    });
+  </script>
+  {% endblock %}
+</div>

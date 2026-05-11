@@ -40,7 +40,7 @@ class OrderService:
         )
 
         order_no = (last.order_no + 1) if last else 1
-        prefix = "PU" if type == OrderTypes.ORDER else "ORD"
+        prefix = "ORD" if type == OrderTypes.ORDER else "OR"
         order_no_full = f"{prefix}-{timezone.now().year}-{order_no:06d}"
 
         return order_no, order_no_full

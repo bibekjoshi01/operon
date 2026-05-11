@@ -29,17 +29,11 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         # Custom User module
         "auth.User": "fas fa-user",
-        # Core Setup
-        "core.AdditionalChargeType": "fas fa-receipt",
         # Order Management
         "order_management.PaymentMethod": "fas fa-credit-card",
         "order_management.Customer": "fas fa-user-tie",
         "order_management.Item": "fas fa-box",
         "order_management.OrderInvoice": "fas fa-cash-register",
-        "order_management.OrderReturn": "fas fa-undo",
-        # Sales
-        "order.PurchaseInvoice": "fas fa-file-invoice-dollar",
-        "order.PurchaseReturn": "fas fa-undo-alt",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

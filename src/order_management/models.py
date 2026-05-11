@@ -12,6 +12,11 @@ class Item(TimeStampedModel):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if self.name:
+            self.name = self.name.strip().title()
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = "Item"
         verbose_name_plural = "Item Setup"
@@ -28,6 +33,11 @@ class Customer(TimeStampedModel):
 
     def __str__(self):
         return f"{self.full_name}"
+
+    def save(self, *args, **kwargs):
+        if self.full_name:
+            self.full_name = self.full_name.strip().title()
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ("full_name",)
@@ -167,6 +177,11 @@ class PaymentMethod(TimeStampedModel):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if self.name:
+            self.name = self.name.strip().title()
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = "Payment Method"
         verbose_name_plural = "Payment Methods"
@@ -204,7 +219,7 @@ class OrderAdditionalCharge(TimeStampedModel):
         verbose_name_plural = "Additional Charges"
 
     def __str__(self) -> str:
-        return self.charge_type.name
+        return str(self.amount)
 
 
 class OrderInvoice(Order):
