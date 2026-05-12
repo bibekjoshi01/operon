@@ -240,7 +240,7 @@ class ItemAdmin(BaseAdmin):
 
     def total_revenue(self, obj):
         total = (
-            obj.item_orders.filter(order__status__slug="delivered").aggregate(
+            obj.item_orders.exclude(order__status__slug="cancelled").aggregate(
                 revenue=Sum("order__grand_total")
             )["revenue"]
             or 0
