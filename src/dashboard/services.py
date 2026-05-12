@@ -7,57 +7,57 @@ from src.expense_management.models import Expense
 from src.order_management.models import Customer, OrderInvoice, OrderStatus
 
 
-# -------------------------
 # CORE FILTER FUNCTION
 # -------------------------
-def get_filtered_orders(range_filter="year"):
+def get_filtered_orders(range_filter):
     today = now().date()
-    qs = OrderInvoice.objects.all()
+    orders = OrderInvoice.objects.all()
+    expense = Expense.objects.all()
 
     if range_filter == "today":
-        qs = qs.filter(created_at__date=today)
+        orders = orders.filter(created_at__date=today)
+        expense = expense.filter(created_at__date=today)
 
     elif range_filter == "month":
-        qs = qs.filter(
+        orders = orders.filter(
+            created_at__year=today.year,
+            created_at__month=today.month,
+        )
+        expense = expense.filter(
             created_at__year=today.year,
             created_at__month=today.month,
         )
 
     elif range_filter == "year":
-        qs = qs.filter(created_at__year=today.year)
+        orders = orders.filter(created_at__year=today.year)
+        expense = expense.filter(created_at__year=today.year)
 
-    return qs
+    return orders, expense
 
 
-# -------------------------
 # MAIN DASHBOARD METRICS
 # -------------------------
-def get_dashboard_metrics(range_filter="all"):
+def get_dashboard_metrics(range_filter):
     today = date.today()
-    orders = get_filtered_orders(range_filter)
+    orders, expense = get_filtered_orders(range_filter)
 
-    # -------------------------
     # ORDER COUNTS
     # -------------------------
     active_orders = orders.exclude(status__is_terminal=True).count()
     total_orders = orders.count()
 
-    completed_today = orders.filter(
+    completed_today = OrderInvoice.objects.filter(
         status__is_terminal=True, status__slug="delivered", updated_at__date=today
     ).count()
 
     customer_count = Customer.objects.count()
 
-    # -------------------------
     # FINANCIALS (IMPORTANT FIX)
     # -------------------------
     revenue = orders.aggregate(total=Sum("grand_total"))["total"] or 0
-
     paid = orders.aggregate(total=Sum("payment_details__amount"))["total"] or 0
-
     pending_payments = revenue - paid
-
-    expenses = Expense.objects.aggregate(total=Sum("amount"))["total"] or 0
+    expenses = expense.aggregate(total=Sum("amount"))["total"] or 0
 
     net_profit = revenue - expenses
 
@@ -76,11 +76,10 @@ def get_dashboard_metrics(range_filter="all"):
     }
 
 
-# -------------------------
 # STATUS DISTRIBUTION (for pie chart)
 # -------------------------
-def get_order_status_distribution(range_filter="all"):
-    orders = get_filtered_orders(range_filter)
+def get_order_status_distribution(range_filter):
+    orders, _ = get_filtered_orders(range_filter)
 
     return list(
         OrderStatus.objects.annotate(count=Count("orders", filter=Q(orders__in=orders)))

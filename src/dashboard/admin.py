@@ -10,10 +10,10 @@ class CustomAdminSite(admin.AdminSite):
     def index(self, request, extra_context=None):
         extra_context = extra_context or {}
 
-        metrics = get_dashboard_metrics()
-        status_data = get_order_status_distribution()
-
         range_filter = request.GET.get("range", "year")
+
+        metrics = get_dashboard_metrics(range_filter)
+        status_data = get_order_status_distribution(range_filter)
 
         extra_context.update(
             {
