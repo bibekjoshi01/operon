@@ -103,15 +103,8 @@ class CustomerAdmin(BaseAdmin):
         )
 
     def get_balance_due_value(self, obj):
-        qs = self.completed_orders_qs(obj)
-
-        result = qs.aggregate(
-            total=Sum("grand_total"),
-            paid=Sum("payment_details__amount"),
-        )
-
-        total = result["total"] or 0
-        paid = result["paid"] or 0
+        total = self.completed_orders_qs(obj).aggregate(total=Sum("grand_total"))["paid"] or 0
+        paid = self.get_total_spent_value(obj)
 
         return total - paid
 
