@@ -10,7 +10,7 @@ from src.order_management.models import Customer, OrderInvoice, OrderStatus
 # -------------------------
 # CORE FILTER FUNCTION
 # -------------------------
-def get_filtered_orders(range_filter="all"):
+def get_filtered_orders(range_filter="year"):
     today = now().date()
     qs = OrderInvoice.objects.all()
 

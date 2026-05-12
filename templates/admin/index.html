@@ -172,7 +172,7 @@
 <div class="dashboard-filter">
   <a
     href="?range=all"
-    class="filter-btn {% if selected_range == 'all' or not selected_range %}active{% endif %}"
+    class="filter-btn {% if selected_range == 'all' %}active{% endif %}"
   >
     All
   </a>
@@ -193,7 +193,7 @@
 
   <a
     href="?range=year"
-    class="filter-btn {% if selected_range == 'year' %}active{% endif %}"
+    class="filter-btn {% if selected_range == 'year' or not selected_range %}active{% endif %}"
   >
     This Year
   </a>

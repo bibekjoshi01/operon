@@ -13,7 +13,7 @@ class CustomAdminSite(admin.AdminSite):
         metrics = get_dashboard_metrics()
         status_data = get_order_status_distribution()
 
-        range_filter = request.GET.get("range", "all")
+        range_filter = request.GET.get("range", "year")
 
         extra_context.update(
             {
