@@ -47,15 +47,22 @@ def get_dashboard_metrics(range_filter):
     total_orders = orders.count()
 
     completed_today = OrderInvoice.objects.filter(
-        status__is_terminal=True, status__slug="delivered", updated_at__date=today
+        status__slug="delivered", updated_at__date=today
     ).count()
 
     customer_count = Customer.objects.count()
 
     # FINANCIALS (IMPORTANT FIX)
     # -------------------------
-    revenue = orders.aggregate(total=Sum("grand_total"))["total"] or 0
-    paid = orders.aggregate(total=Sum("payment_details__amount"))["total"] or 0
+    revenue = (
+        orders.exclude(status__slug="cancelled").aggregate(total=Sum("grand_total"))["total"] or 0
+    )
+    paid = (
+        orders.exclude(status__slug="cancelled").aggregate(total=Sum("payment_details__amount"))[
+            "total"
+        ]
+        or 0
+    )
     pending_payments = revenue - paid
     expenses = expense.aggregate(total=Sum("amount"))["total"] or 0
 
