@@ -93,17 +93,16 @@ class CustomerAdmin(BaseAdmin):
         ),
     )
 
-    def completed_orders_qs(self, obj):
-        return obj.customer_orders.filter(status__is_terminal=True, status__slug="delivered")
+    def active_orders_qs(self, obj):
+        return obj.customer_orders.exclude(status__is_terminal=True, status__slug="cancelled")
 
     def get_total_spent_value(self, obj):
         return (
-            self.completed_orders_qs(obj).aggregate(paid=Sum("payment_details__amount"))["paid"]
-            or 0
+            self.active_orders_qs(obj).aggregate(paid=Sum("payment_details__amount"))["paid"] or 0
         )
 
     def get_balance_due_value(self, obj):
-        total = self.completed_orders_qs(obj).aggregate(total=Sum("grand_total"))["total"] or 0
+        total = self.active_orders_qs(obj).aggregate(total=Sum("grand_total"))["total"] or 0
         paid = self.get_total_spent_value(obj)
 
         return total - paid
