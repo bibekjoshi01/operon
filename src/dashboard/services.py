@@ -42,7 +42,9 @@ def get_dashboard_metrics(range_filter="all"):
     active_orders = orders.exclude(status__is_terminal=True).count()
     total_orders = orders.count()
 
-    completed_today = orders.filter(status__is_terminal=True, updated_at__date=today).count()
+    completed_today = orders.filter(
+        status__is_terminal=True, status__slug="delivered", updated_at__date=today
+    ).count()
 
     customer_count = Customer.objects.count()
 
@@ -81,7 +83,7 @@ def get_order_status_distribution(range_filter="all"):
     orders = get_filtered_orders(range_filter)
 
     return list(
-        OrderStatus.objects.annotate(count=Count("orders", filter=Q(orders__in=orders))).values(
-            "name", "color", "count"
-        )
+        OrderStatus.objects.annotate(count=Count("orders", filter=Q(orders__in=orders)))
+        .values("name", "color", "count")
+        .order_by("sequence")
     )
